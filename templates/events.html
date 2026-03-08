@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Events - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Upcoming Events</h1>
+            <p>Stay connected with alumni events, workshops, and gatherings</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <!-- Event Filters -->
+    <div class="job-filters" style="margin-bottom: var(--space-xl);">
+        <form method="GET" action="{{ url_for('events') }}" class="filter-form">
+            <select name="type" class="form-control">
+                <option value="">All Event Types</option>
+                <option value="reunion" {% if event_type == 'reunion' %}selected{% endif %}>Reunion</option>
+                <option value="career_fair" {% if event_type == 'career_fair' %}selected{% endif %}>Career Fair</option>
+                <option value="workshop" {% if event_type == 'workshop' %}selected{% endif %}>Workshop</option>
+                <option value="gathering" {% if event_type == 'gathering' %}selected{% endif %}>Gathering</option>
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-filter"></i> Filter
+            </button>
+        </form>
+    </div>
+
+    <!-- Events Grid -->
+    {% if events %}
+    <div class="events-grid">
+        {% for event in events %}
+        <div class="event-card">
+            <div class="event-image">
+                <div class="event-date-badge">
+                    <div class="day">{{ event.event_date.strftime('%d') }}</div>
+                    <div class="month">{{ event.event_date.strftime('%b') }}</div>
+                </div>
+                <i class="fas fa-calendar-alt" style="font-size: 4rem; color: white; opacity: 0.3;"></i>
+            </div>
+            <div class="event-content">
+                <span class="event-type">{{ event.event_type|replace('_', ' ')|title }}</span>
+                <h3 class="event-title">{{ event.title }}</h3>
+                <div class="event-details">
+                    <div class="event-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ event.location }}</span>
+                    </div>
+                    <div class="event-detail">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ event.event_date.strftime('%I:%M %p') }}</span>
+                    </div>
+                    {% if event.venue %}
+                    <div class="event-detail">
+                        <i class="fas fa-building"></i>
+                        <span>{{ event.venue }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">{{ event.description[:150] }}...</p>
+                <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-primary">
+                    <i class="fas fa-info-circle"></i> Details
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-calendar-times"></i>
+        <h3>No Events Found</h3>
+        <p>There are no upcoming events at this time. Check back later!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

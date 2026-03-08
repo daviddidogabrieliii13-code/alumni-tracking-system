@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block title %}WVSU Pototan - Online Alumni Tracking & Graduate Tracer Study System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Western Visayas State University</span>
+            </div>
+            <h1 class="hero-title">
+                Online Alumni Tracking & <br><span>Graduate Tracer Study System</span>
+            </h1>
+            <p class="hero-subtitle">
+                Connecting WVSU Pototan Campus alumni to their future. Track your career journey, 
+                stay connected with fellow graduates, and help us improve our education system through valuable feedback.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-user-plus"></i> Register as Alumni
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline btn-lg" style="border-color: white; color: white;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ total_alumni }}+</div>
+                    <div class="hero-stat-label">Alumni Registered</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ employed_count }}+</div>
+                    <div class="hero-stat-label">Employed Graduates</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ survey_responses }}+</div>
+                    <div class="hero-stat-label">Survey Responses</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ active_jobs }}+</div>
+                    <div class="hero-stat-label">Job Opportunities</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">What We Offer</span>
+            <h2 class="section-title">Comprehensive Alumni Services</h2>
+            <p class="section-desc">
+                Our system provides a complete suite of tools to help alumni stay connected, 
+                track their career progress, and give back to the WVSU community.
+            </p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3 class="feature-title">Alumni Profile</h3>
+                <p class="feature-desc">
+                    Create and manage your professional profile. Showcase your achievements, 
+                    education, and career progress to fellow alumni and potential employers.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="feature-title">Job Board</h3>
+                <p class="feature-desc">
+                    Access exclusive job opportunities from partner companies. 
+                    Get matched with positions that align with your skills and experience.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-poll"></i>
+                </div>
+                <h3 class="feature-title">Graduate Survey</h3>
+                <p class="feature-desc">
+                    Help us improve our curriculum by providing feedback on your educational 
+                    experience and how it prepared you for your career.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3 class="feature-title">Analytics Dashboard</h3>
+                <p class="feature-desc">
+                    Access comprehensive analytics on graduate employment rates, salary trends, 
+                    and industry distribution to make informed career decisions.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3 class="feature-title">Events & Reunions</h3>
+                <p class="feature-desc">
+                    Stay updated with upcoming alumni events, career fairs, workshops, 
+                    and class reunions. Never miss an opportunity to connect.
+                </p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Alumni Directory</h3>
+                <p class="feature-desc">
+                    Connect with fellow alumni from different batches and courses. 
+                    Build your professional network within the WVSU community.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stats-item">
+                <div class="stats-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stats-value">{{ total_alumni }}+</div>
+                <div class="stats-label">Total Alumni</div>
+            </div>
+            
+            <div class="stats-item">
+                <div class="stats-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="stats-value">{{ employed_count }}+</div>
+                <div class="stats-label">Employed Graduates</div>
+            </div>
+            
+            <div class="stats-item">
+                <div class="stats-icon">
+                    <i class="fas fa-poll"></i>
+                </div>
+                <div class="stats-value">{{ survey_responses }}+</div>
+                <div class="stats-label">Survey Responses</div>
+            </div>
+            
+            <div class="stats-item">
+                <div class="stats-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="stats-value">50+</div>
+                <div class="stats-label">Partner Companies</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-image">
+                <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-university" style="font-size: 8rem; color: white; opacity: 0.5;"></i>
+                </div>
+            </div>
+            <div class="about-content">
+                <span class="section-subtitle">About WVSU Pototan</span>
+                <h2>Bridging Education to Career Excellence</h2>
+                <p>
+                    Western Visayas State University - Pototan Campus has been a beacon of quality education 
+                    in the region for decades. Our Alumni Tracking and Graduate Tracer Study System represents 
+                    our commitment to continuous improvement and our dedication to our students' success.
+                </p>
+                <p>
+                    By tracking our graduates' career paths and gathering their feedback, we can better 
+                    understand how our education translates into real-world success and identify areas 
+                    for improvement in our curriculum.
+                </p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Quality Education</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Industry-Ready Graduates</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Strong Alumni Network</span>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Career Support</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('about') }}" class="btn btn-primary" style="margin-top: var(--space-lg);">
+                    Learn More <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Upcoming Events -->
+{% if upcoming_events %}
+<section class="features-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">Stay Connected</span>
+            <h2 class="section-title">Upcoming Events</h2>
+            <p class="section-desc">
+                Don't miss out on opportunities to connect with fellow alumni and grow your network.
+            </p>
+        </div>
+        
+        <div class="events-grid">
+            {% for event in upcoming_events %}
+            <div class="event-card">
+                <div class="event-image">
+                    <div class="event-date-badge">
+                        <div class="day">{{ event.event_date.strftime('%d') }}</div>
+                        <div class="month">{{ event.event_date.strftime('%b') }}</div>
+                    </div>
+                    <i class="fas fa-calendar-alt" style="font-size: 4rem; color: white; opacity: 0.3;"></i>
+                </div>
+                <div class="event-content">
+                    <span class="event-type">{{ event.event_type|replace('_', ' ')|title }}</span>
+                    <h3 class="event-title">{{ event.title }}</h3>
+                    <div class="event-details">
+                        <div class="event-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>{{ event.location }}</span>
+                        </div>
+                        <div class="event-detail">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ event.event_date.strftime('%I:%M %p') }}</span>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('events') }}" class="btn btn-outline btn-sm">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center" style="margin-top: var(--space-xl);">
+            <a href="{{ url_for('events') }}" class="btn btn-primary">
+                View All Events <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Testimonials -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">Success Stories</span>
+            <h2 class="section-title">Alumni Testimonials</h2>
+            <p class="section-desc">
+                Hear from our successful alumni about their journey after graduation.
+            </p>
+        </div>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">JD</div>
+                    <div class="testimonial-info">
+                        <h4>Juan Dela Cruz</h4>
+                        <span>Class of 2019 - BSIT</span>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "WVSU Pototan gave me the foundation I needed to succeed in the tech industry. 
+                    The alumni network has been invaluable in my career growth."
+                </p>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">MS</div>
+                    <div class="testimonial-info">
+                        <h4>Maria Santos</h4>
+                        <span>Class of 2020 - BSBA</span>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "The tracer study system helped me connect with alumni working in my dream company. 
+                    I'm now a Marketing Manager thanks to this network!"
+                </p>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">PG</div>
+                    <div class="testimonial-info">
+                        <h4>Pedro Garcia</h4>
+                        <span>Class of 2018 - BSEd</span>
+                    </div>
+                </div>
+                <p class="testimonial-text">
+                    "As a teacher, I appreciate how WVSU continues to support its graduates. 
+                    The system keeps us connected and informed about opportunities."
+                </p>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="features-section" style="background: linear-gradient(135deg, var(--primary), var(--primary-dark));">
+    <div class="container">
+        <div class="text-center" style="color: white;">
+            <h2 style="color: white; margin-bottom: var(--space-md);">Ready to Get Started?</h2>
+            <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: var(--space-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
+                Join thousands of alumni who are already connected and benefiting from our network. 
+                Register today and take advantage of all our services.
+            </p>
+            <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('register') }}" class="btn btn-lg" style="background: white; color: var(--primary);">
+                    <i class="fas fa-user-plus"></i> Register Now
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn-lg" style="background: transparent; border: 2px solid white; color: white;">
+                    <i class="fas fa-envelope"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

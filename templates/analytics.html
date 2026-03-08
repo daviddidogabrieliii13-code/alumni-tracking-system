@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Analytics Dashboard</h1>
+            <p>Comprehensive insights and statistics on alumni and graduate outcomes</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <!-- Stats Cards -->
+    <div class="analytics-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon primary">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-card-value">{{ total_alumni }}</div>
+            <div class="stat-card-label">Total Alumni</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon success">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="stat-card-value">{{ employment_rate }}%</div>
+            <div class="stat-card-label">Employment Rate</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon warning">
+                <i class="fas fa-poll"></i>
+            </div>
+            <div class="stat-card-value">{{ survey_rate }}%</div>
+            <div class="stat-card-label">Survey Response</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon danger">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="stat-card-value">{{ total_jobs }}</div>
+            <div class="stat-card-label">Job Listings</div>
+        </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3><i class="fas fa-chart-pie"></i> Employment Status</h3>
+            <canvas id="employmentChart"></canvas>
+        </div>
+        
+        <div class="chart-card">
+            <h3><i class="fas fa-chart-bar"></i> Graduates by Year</h3>
+            <canvas id="graduatesChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="chart-grid">
+        <div class="chart-card">
+            <h3><i class="fas fa-chart-doughnut"></i> Degrees Distribution</h3>
+            <canvas id="degreesChart"></canvas>
+        </div>
+        
+        <div class="chart-card">
+            <h3><i class="fas fa-star"></i> Survey Ratings Average</h3>
+            <canvas id="ratingsChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Employment Status Chart
+    new Chart(document.getElementById('employmentChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Employed', 'Unemployed', 'Self-Employed', 'Student'],
+            datasets: [{
+                data: [{{ employed }}, {{ unemployed }}, {{ self_employed }}, {{ student }}],
+                backgroundColor: ['#2D6A4F', '#E76F51', '#E9C46A', '#5FA8D3']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    // Graduates by Year Chart
+    new Chart(document.getElementById('graduatesChart'), {
+        type: 'bar',
+        data: {
+            labels: {{ years|tojson }},
+            datasets: [{
+                label: 'Graduates',
+                data: {{ graduates_by_year|tojson }},
+                backgroundColor: '#1B4965'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    // Degrees Distribution Chart
+    new Chart(document.getElementById('degreesChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ degrees|tojson }},
+            datasets: [{
+                data: {{ degrees_count|tojson }},
+                backgroundColor: ['#1B4965', '#5FA8D3', '#2D6A4F', '#E9C46A', '#E76F51']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+
+    // Survey Ratings Chart
+    new Chart(document.getElementById('ratingsChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Education Quality', 'Curriculum', 'Facilities', 'Satisfaction', 'Recommend'],
+            datasets: [{
+                label: 'Average Rating',
+                data: [{{ avg_education }}, {{ avg_curriculum }}, {{ avg_facilities }}, {{ avg_satisfaction }}, {{ avg_recommend }}],
+                backgroundColor: ['#1B4965', '#5FA8D3', '#62B6CB', '#2D6A4F', '#E9C46A']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true, max: 5 }
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

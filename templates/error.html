@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Error {{ error_code }} - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div>
+        <div class="error-code">{{ error_code }}</div>
+        <h2 class="error-message">{{ message }}</h2>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-xl);">
+            The page you're looking for might have been removed, had its name changed, or is temporarily unavailable.
+        </p>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+    </div>
+</div>
+{% endblock %}

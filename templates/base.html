@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WVSU Pototan - Alumni Tracking System{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                <div class="logo-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">WVSU</span>
+                    <span class="logo-subtitle">Pototan</span>
+                </div>
+            </a>
+            
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('alumni_directory') }}" class="nav-link {% if request.endpoint == 'alumni_directory' %}active{% endif %}">Alumni</a></li>
+                <li class="nav-item"><a href="{{ url_for('jobs') }}" class="nav-link {% if request.endpoint == 'jobs' %}active{% endif %}">Jobs</a></li>
+                <li class="nav-item"><a href="{{ url_for('events') }}" class="nav-link {% if request.endpoint == 'events' %}active{% endif %}">Events</a></li>
+                <li class="nav-item"><a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-user-shield"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('admin') }}"><i class="fas fa-cog"></i> Dashboard</a></li>
+                            <li><a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                            <li><a href="{{ url_for('admin_alumni') }}"><i class="fas fa-users"></i> Alumni</a></li>
+                            <li><a href="{{ url_for('admin_jobs') }}"><i class="fas fa-briefcase"></i> Jobs</a></li>
+                            <li><a href="{{ url_for('admin_events') }}"><i class="fas fa-calendar"></i> Events</a></li>
+                            <li><a href="{{ url_for('admin_surveys') }}"><i class="fas fa-poll"></i> Surveys</a></li>
+                            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% elif current_user.role == 'registrar' %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-user-tie"></i> Registrar
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('registrar_dashboard') }}"><i class="fas fa-cog"></i> Dashboard</a></li>
+                            <li><a href="{{ url_for('registrar_alumni') }}"><i class="fas fa-users"></i> Alumni Records</a></li>
+                            <li><a href="{{ url_for('registrar_verification') }}"><i class="fas fa-check-circle"></i> Verification</a></li>
+                            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% elif current_user.role == 'osa' %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-user-graduate"></i> OSA
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('osa_dashboard') }}"><i class="fas fa-cog"></i> Dashboard</a></li>
+                            <li><a href="{{ url_for('osa_students') }}"><i class="fas fa-users"></i> Students</a></li>
+                            <li><a href="{{ url_for('osa_activities') }}"><i class="fas fa-calendar-alt"></i> Activities</a></li>
+                            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">
+                            <i class="fas fa-user-circle"></i> {{ current_user.profile.first_name if current_user.profile else 'Account' }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                            <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> My Profile</a></li>
+                            <li><a href="{{ url_for('survey') }}"><i class="fas fa-poll"></i> Survey</a></li>
+                            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                {% else %}
+                    <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-btn btn-outline">Login</a></li>
+                    <li class="nav-item"><a href="{{ url_for('register') }}" class="nav-btn btn-primary">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% elif category == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        {{ message }}
+                        <button class="alert-close">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>WVSU Pototan</span>
+                    </div>
+                    <p class="footer-desc">
+                        The Online Alumni Tracking & Graduate Tracer Study System for Western Visayas State University - Pototan Campus. Connecting alumni to their future.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="{{ url_for('alumni_directory') }}">Alumni Directory</a></li>
+                        <li><a href="{{ url_for('jobs') }}">Job Board</a></li>
+                        <li><a href="{{ url_for('events') }}">Events</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('register') }}">Register as Alumni</a></li>
+                        <li><a href="{{ url_for('survey') }}">Graduate Survey</a></li>
+                        <li><a href="#">Career Services</a></li>
+                        <li><a href="#">Alumni Benefits</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> WVSU Pototan Campus, Iloilo, Philippines</li>
+                        <li><i class="fas fa-phone"></i> (033) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> alumni@wvsu.edu.ph</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 WVSU Pototan - Online Alumni Tracking & Graduate Tracer Study System. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

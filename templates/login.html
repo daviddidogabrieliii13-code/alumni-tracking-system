@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Login - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-icon" style="width: 60px; height: 60px; margin: 0 auto var(--space-md);">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your alumni account</p>
+            </div>
+            
+            <div class="auth-body">
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="form-group">
+                        <label class="form-label required">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="your.email@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                        <a href="{{ url_for('forgot_password') }}" style="color: var(--primary); font-size: 0.9rem;">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-sign-in-alt"></i> Sign In
+                    </button>
+                </form>
+                
+                <div class="auth-divider">
+                    <span>or continue with</span>
+                </div>
+                
+                <div class="social-auth">
+                    <button type="button" class="social-auth-btn">
+                        <i class="fab fa-google"></i> Google
+                    </button>
+                    <button type="button" class="social-auth-btn">
+                        <i class="fab fa-facebook-f"></i> Facebook
+                    </button>
+                </div>
+            
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Register here</a></p>
+            </div>
+    </div>
+{% endblock %}

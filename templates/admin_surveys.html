@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Surveys - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    {% include 'admin_sidebar.html' %}
+    
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-poll"></i> Survey Responses</h1>
+        </div>
+        
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Alumni</th>
+                        <th>Education Quality</th>
+                        <th>Curriculum</th>
+                        <th>Facilities</th>
+                        <th>Satisfaction</th>
+                        <th>Recommend</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for survey, profile in surveys_data %}
+                    <tr>
+                        <td>{{ profile.first_name }} {{ profile.last_name }}</td>
+                        <td>{{ survey.education_quality }}/5</td>
+                        <td>{{ survey.curriculum_relevance }}/5</td>
+                        <td>{{ survey.facilities_rating }}/5</td>
+                        <td>{{ survey.overall_satisfaction }}/5</td>
+                        <td>{{ survey.recommend_rating }}/10</td>
+                        <td>{{ survey.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td class="table-actions">
+                            <form method="POST" action="{{ url_for('admin_delete_survey', survey_id=survey.id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this survey?');">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

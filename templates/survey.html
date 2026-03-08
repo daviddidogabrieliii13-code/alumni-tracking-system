@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}Graduate Tracer Survey - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Graduate Tracer Study Survey</h1>
+            <p>Help us improve our education by providing your valuable feedback</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <div class="survey-container">
+        <div class="survey-progress">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3><i class="fas fa-clipboard-check"></i> Survey Progress</h3>
+                <span style="font-weight: 600; color: var(--primary);">Complete all sections</span>
+            </div>
+            <div class="survey-progress-bar">
+                <div class="survey-progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <form method="POST" action="{{ url_for('survey') }}" id="surveyForm">
+            <!-- Educational Experience -->
+            <div class="survey-section">
+                <h3 class="survey-section-title">
+                    <i class="fas fa-school"></i> Educational Experience
+                </h3>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">1. How would you rate the quality of education you received at WVSU Pototan?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="education_quality" id="eq{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="eq{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                    <small style="color: var(--text-secondary);">1 = Poor, 5 = Excellent</small>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">2. How relevant was your course curriculum to your current job?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="curriculum_relevance" id="cr{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="cr{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">3. How would you rate the school facilities (labs, library, classrooms)?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="facilities_rating" id="fr{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="fr{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">4. How would you rate the quality of your instructors?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="instructor_quality" id="iq{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="iq{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">5. How would you rate the research opportunities provided?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="research_opportunities" id="ro{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="ro{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competency Assessment -->
+            <div class="survey-section">
+                <h3 class="survey-section-title">
+                    <i class="fas fa-tools"></i> Competency Assessment
+                </h3>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">6. How would you rate your technical skills acquired from your course?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="competency_technical" id="ct{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="ct{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">7. How would you rate your soft skills (communication, teamwork)?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="competency_soft" id="cs{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="cs{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">8. How would you rate your problem-solving skills?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="competency_problem" id="cp{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="cp{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">9. How would you rate your communication skills?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="competency_communication" id="cc{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="cc{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">10. How would you rate your leadership skills?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="competency_leadership" id="cl{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="cl{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employment Status -->
+            <div class="survey-section">
+                <h3 class="survey-section-title">
+                    <i class="fas fa-briefcase"></i> Employment Status
+                </h3>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">11. Are you currently employed?</label>
+                    <div style="display: flex; gap: var(--space-lg); margin-top: var(--space-sm);">
+                        <div class="form-check">
+                            <input type="radio" name="is_employed" id="employed_yes" value="yes" class="form-check-input">
+                            <label class="form-check-label" for="employed_yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="is_employed" id="employed_no" value="no" class="form-check-input">
+                            <label class="form-check-label" for="employed_no">No</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">12. Is your current job related to your course?</label>
+                    <div style="display: flex; gap: var(--space-lg); margin-top: var(--space-sm);">
+                        <div class="form-check">
+                            <input type="radio" name="job_related" id="related_yes" value="yes" class="form-check-input">
+                            <label class="form-check-label" for="related_yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="job_related" id="related_no" value="no" class="form-check-input">
+                            <label class="form-check-label" for="related_no">No</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">13. Are you currently looking for a job?</label>
+                    <div style="display: flex; gap: var(--space-lg); margin-top: var(--space-sm);">
+                        <div class="form-check">
+                            <input type="radio" name="job_searching" id="searching_yes" value="yes" class="form-check-input">
+                            <label class="form-check-label" for="searching_yes">Yes</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" name="job_searching" id="searching_no" value="no" class="form-check-input">
+                            <label class="form-check-label" for="searching_no">No</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">14. What sector are you currently working in?</label>
+                    <select name="employment_sector" class="form-control" style="margin-top: var(--space-sm);">
+                        <option value="">Select sector</option>
+                        <option value="government">Government</option>
+                        <option value="private">Private Company</option>
+                        <option value="nonprofit">Non-Profit/NGO</option>
+                        <option value="self-employed">Self-Employed</option>
+                        <option value="education">Education</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="technology">Technology</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Overall Satisfaction -->
+            <div class="survey-section">
+                <h3 class="survey-section-title">
+                    <i class="fas fa-star"></i> Overall Satisfaction
+                </h3>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">15. How satisfied are you with your overall experience at WVSU Pototan?</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 6) %}
+                        <input type="radio" name="overall_satisfaction" id="os{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="os{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">16. How likely are you to recommend WVSU Pototan to others? (1-10)</label>
+                    <div class="rating-group">
+                        {% for i in range(1, 11) %}
+                        <input type="radio" name="recommend_rating" id="rr{{ i }}" value="{{ i }}" class="rating-option">
+                        <label for="rr{{ i }}" class="rating-label">{{ i }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="survey-question">
+                    <label class="survey-question-label">17. Do you have any suggestions for improving the curriculum or services?</label>
+                    <textarea name="suggestions" class="form-control" rows="4" placeholder="Share your thoughts and suggestions..."></textarea>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-paper-plane"></i> Submit Survey
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

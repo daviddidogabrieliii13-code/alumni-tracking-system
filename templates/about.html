@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}About - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>About WVSU Pototan</h1>
+            <p>Learn more about our university and the alumni system</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <div class="about-section" style="background: transparent;">
+        <div class="about-grid">
+            <div class="about-image">
+                <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-university" style="font-size: 8rem; color: white; opacity: 0.5;"></i>
+                </div>
+            </div>
+            <div class="about-content">
+                <h2>Western Visayas State University - Pototan Campus</h2>
+                <p>
+                    Western Visayas State University (WVSU) is a premier state university in the Western Visayas region of the Philippines. 
+                    The Pototan Campus, located in the municipality of Pototan, Iloilo, has been providing quality education to students 
+                    from the province and beyond.
+                </p>
+                <p>
+                    Our institution is committed to producing graduates who are not only academically proficient but also 
+                    equipped with the skills and values needed to contribute meaningfully to society.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission Vision -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-bottom: var(--space-xxl);">
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-eye"></i> Vision</h3>
+            </div>
+            <div class="card-body">
+                <p>
+                    To become a center of excellence in education, research, and community development in the region, 
+                    producing holistic and globally competitive graduates who are committed to national development and global challenges.
+                </p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h3><i class="fas fa-bullseye"></i> Mission</h3>
+            </div>
+            <div class="card-body">
+                <p>
+                    Western Visayas State University is committed to provide relevant and quality education through 
+                    innovative instruction, research, and extension services that develop productive and responsible citizens.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Programs Offered -->
+    <div class="section-header">
+        <h2 class="section-title">Programs Offered</h2>
+        <p class="section-desc">Our campus offers various undergraduate and graduate programs</p>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-lg);">
+        <div class="card">
+            <div class="card-body" style="text-align: center;">
+                <i class="fas fa-laptop-code" style="font-size: 2rem; color: var(--primary); margin-bottom: var(--space-md);"></i>
+                <h4>College of Computer Studies</h4>
+                <p style="color: var(--text-secondary); margin-top: var(--space-sm);">BS in Information Technology<br>BS in Computer Science</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body" style="text-align: center;">
+                <i class="fas fa-business" style="font-size: 2rem; color: var(--primary); margin-bottom: var(--space-md);"></i>
+                <h4>College of Business</h4>
+                <p style="color: var(--text-secondary); margin-top: var(--space-sm);">BS in Business Administration<br>BS in Accountancy</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body" style="text-align: center;">
+                <i class="fas fa-chalkboard-teacher" style="font-size: 2rem; color: var(--primary); margin-bottom: var(--space-md);"></i>
+                <h4>College of Education</h4>
+                <p style="color: var(--text-secondary); margin-top: var(--space-sm);">BS in Education<br>Teacher Education</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body" style="text-align: center;">
+                <i class="fas fa-heartbeat" style="font-size: 2rem; color: var(--primary); margin-bottom: var(--space-md);"></i>
+                <h4>College of Nursing</h4>
+                <p style="color: var(--text-secondary); margin-top: var(--space-sm);">BS in Nursing<br>Health Sciences</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
