@@ -25,12 +25,12 @@
 - [ ] Procfile (`web: gunicorn app:app`)
 - [ ] runtime.txt (`python-3.12.6`)
 - [ ] .gitignore (hide DB/uploads)
-- [ ] railway.json (PostgreSQL config)
+render.yaml (Render config)
 
 ### 🧪 Local Production Test
 - [ ] `gunicorn app:app` → localhost:8000 (proves safe)
 
-### 🚀 Railway Live Deploy
+**Render Live Deploy** (render.com)
 - [ ] New Railway project from GitHub
 - [ ] PostgreSQL database addon  
 - [ ] Set env vars (SECRET_KEY, DATABASE_URL)
