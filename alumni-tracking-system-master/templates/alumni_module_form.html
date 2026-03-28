@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni 4-Part Form - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Alumni 4-Part Form</h1>
+            <p>Personal information, education, family, and enrollment details in one secure module.</p>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <h4>Alumni Module</h4>
+            <a href="{{ url_for('alumni_module_dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-pie"></i> Module Dashboard
+            </a>
+            <a href="{{ url_for('alumni_module_form') }}" class="sidebar-link active">
+                <i class="fas fa-id-card"></i> 4-Part Form
+            </a>
+            <a href="{{ url_for('alumni_module_profile') }}" class="sidebar-link">
+                <i class="fas fa-address-card"></i> Profile View
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-tachometer-alt"></i> Main Dashboard
+            </a>
+        </div>
+        <div class="sidebar-profile">
+            <div class="sidebar-avatar">
+                <img src="{{ profile_photo_url(profile) }}" alt="Profile photo">
+            </div>
+            <h4>{{ profile.first_name or 'Alumni' }} {{ profile.last_name or '' }}</h4>
+            <p>{{ profile.degree or 'Degree not set' }}</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section class="form-section">
+            <div class="module-form-header">
+                <div>
+                    <h3 class="form-section-title"><i class="fas fa-layer-group"></i> Alumni Form Sections</h3>
+                    <p class="text-muted">Complete each section and save securely. Profile photo is optional.</p>
+                </div>
+                <div class="module-form-actions">
+                    <a href="{{ url_for('alumni_module_profile') }}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-eye"></i> View Profile
+                    </a>
+                    <a href="{{ url_for('alumni_module_dashboard') }}" class="btn btn-outline btn-sm">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                    {% if profile.profile_photo %}
+                    <form method="POST" action="{{ url_for('alumni_module_delete_photo') }}" class="inline-form">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Delete Photo
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="module-stepper" role="tablist" aria-label="Alumni form steps">
+                <button type="button" class="module-step-btn active" data-step-target="1">
+                    <span>1</span> Personal
+                </button>
+                <button type="button" class="module-step-btn" data-step-target="2">
+                    <span>2</span> Education
+                </button>
+                <button type="button" class="module-step-btn" data-step-target="3">
+                    <span>3</span> Family
+                </button>
+                <button type="button" class="module-step-btn" data-step-target="4">
+                    <span>4</span> Enrollment
+                </button>
+            </div>
+
+            <form method="POST" action="{{ url_for('alumni_module_form') }}" enctype="multipart/form-data" id="alumniModuleForm">
+                <section class="module-step-panel active" data-step-panel="1">
+                    <h4 class="form-section-title"><i class="fas fa-user"></i> Personal Information</h4>
+                    <div class="module-photo-box">
+                        <div class="module-photo-preview-wrap">
+                            <img src="{{ profile_photo_url(profile) }}" alt="Profile photo preview" id="profilePhotoPreview" class="module-photo-preview">
+                        </div>
+                        <div class="module-photo-controls">
+                            <label class="form-label">Profile Picture (Optional)</label>
+                            <input
+                                type="file"
+                                name="profile_photo"
+                                id="profilePhotoInput"
+                                class="form-control"
+                                accept=".png,.jpg,.jpeg,.webp"
+                                data-photo-preview="#profilePhotoPreview"
+                            >
+                            <small class="form-text">Accepted formats: JPG, PNG, WEBP. File name is secured and saved uniquely.</small>
+                            {% if profile.profile_photo %}
+                            <label class="form-check">
+                                <input type="checkbox" class="form-check-input" name="remove_profile_photo" value="1">
+                                Remove current photo on save
+                            </label>
+                            <small class="form-text">Check the option above and click save to remove this photo.</small>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">First Name</label>
+                            <input type="text" name="first_name" class="form-control" value="{{ profile.first_name or '' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Middle Name</label>
+                            <input type="text" name="middle_name" class="form-control" value="{{ profile.middle_name or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Last Name</label>
+                            <input type="text" name="last_name" class="form-control" value="{{ profile.last_name or '' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">Email Address</label>
+                            <input type="email" name="email" class="form-control" value="{{ account_email or '' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" name="phone" class="form-control" value="{{ profile.phone or '' }}" placeholder="+63 912 345 6789">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" name="date_of_birth" class="form-control" value="{{ profile.date_of_birth.strftime('%Y-%m-%d') if profile.date_of_birth else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gender</label>
+                            <select name="gender" class="form-control">
+                                <option value="">Select gender</option>
+                                <option value="male" {% if profile.gender == 'male' %}selected{% endif %}>Male</option>
+                                <option value="female" {% if profile.gender == 'female' %}selected{% endif %}>Female</option>
+                                <option value="other" {% if profile.gender == 'other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Civil Status</label>
+                            <select name="civil_status" class="form-control">
+                                <option value="">Select status</option>
+                                <option value="single" {% if profile.civil_status == 'single' %}selected{% endif %}>Single</option>
+                                <option value="married" {% if profile.civil_status == 'married' %}selected{% endif %}>Married</option>
+                                <option value="widowed" {% if profile.civil_status == 'widowed' %}selected{% endif %}>Widowed</option>
+                                <option value="separated" {% if profile.civil_status == 'separated' %}selected{% endif %}>Separated</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <input type="text" name="address" class="form-control" value="{{ profile.address or '' }}" placeholder="Street / Barangay">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">City</label>
+                            <input type="text" name="city" class="form-control" value="{{ profile.city or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Province</label>
+                            <input type="text" name="province" class="form-control" value="{{ profile.province or '' }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Facebook Profile</label>
+                            <input type="url" name="facebook_link" class="form-control" value="{{ profile.facebook_link or '' }}" placeholder="https://facebook.com/username">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">LinkedIn Profile</label>
+                            <input type="url" name="linkedin_link" class="form-control" value="{{ profile.linkedin_link or '' }}" placeholder="https://linkedin.com/in/username">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="module-step-panel" data-step-panel="2">
+                    <h4 class="form-section-title"><i class="fas fa-graduation-cap"></i> Educational Background</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">Degree/Course</label>
+                            {% set selected_degree = profile.degree or '' %}
+                            <select name="degree" class="form-control js-degree-select" data-other-input-id="degree_other_module" required>
+                                <option value="">Select degree/course</option>
+                                {% for degree in degree_options %}
+                                <option value="{{ degree }}" {% if selected_degree == degree %}selected{% endif %}>{{ degree }}</option>
+                                {% endfor %}
+                                <option value="__other__">Other (Please specify)</option>
+                            </select>
+                            <input type="text" id="degree_other_module" class="form-control degree-other-input" placeholder="Enter full course name" hidden>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Student ID</label>
+                            <input type="text" name="student_id" class="form-control" value="{{ profile.student_id or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Year Graduated</label>
+                            <select name="year_graduated" class="form-control" required>
+                                <option value="">Select year</option>
+                                {% for year in year_options %}
+                                <option value="{{ year }}" {% if profile.year_graduated == year %}selected{% endif %}>{{ year }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Honors/Awards</label>
+                            <input type="text" name="honors" class="form-control" value="{{ profile.honors or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Activities/Organizations</label>
+                            <input type="text" name="activities" class="form-control" value="{{ profile.activities or '' }}">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="module-step-panel" data-step-panel="3">
+                    <h4 class="form-section-title"><i class="fas fa-users"></i> Family Information</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Father's Name</label>
+                            <input type="text" name="father_name" class="form-control" value="{{ profile.father_name or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Father Contact Number</label>
+                            <input type="tel" name="father_contact" class="form-control" value="{{ profile.father_contact or '' }}" placeholder="+63 9xx xxx xxxx">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Mother's Name</label>
+                            <input type="text" name="mother_name" class="form-control" value="{{ profile.mother_name or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mother Contact Number</label>
+                            <input type="tel" name="mother_contact" class="form-control" value="{{ profile.mother_contact or '' }}" placeholder="+63 9xx xxx xxxx">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Guardian Name</label>
+                            <input type="text" name="guardian_name" class="form-control" value="{{ profile.guardian_name or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Guardian Contact Number</label>
+                            <input type="tel" name="guardian_contact" class="form-control" value="{{ profile.guardian_contact or '' }}" placeholder="+63 9xx xxx xxxx">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="module-step-panel" data-step-panel="4">
+                    <h4 class="form-section-title"><i class="fas fa-user-check"></i> Enrollment Information</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Enrollment Status</label>
+                            <select name="enrollment_status" class="form-control">
+                                <option value="">Select enrollment status</option>
+                                <option value="not_enrolled" {% if profile.enrollment_status == 'not_enrolled' %}selected{% endif %}>Not Enrolled</option>
+                                <option value="currently_enrolled" {% if profile.enrollment_status == 'currently_enrolled' %}selected{% endif %}>Currently Enrolled</option>
+                                <option value="graduated_studies" {% if profile.enrollment_status == 'graduated_studies' %}selected{% endif %}>Graduate Studies</option>
+                                <option value="short_course" {% if profile.enrollment_status == 'short_course' %}selected{% endif %}>Short Course</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Employment Status</label>
+                            <select name="employment_status" class="form-control">
+                                <option value="student" {% if profile.employment_status == 'student' %}selected{% endif %}>Continuing Studies</option>
+                                <option value="employed" {% if profile.employment_status == 'employed' %}selected{% endif %}>Employed</option>
+                                <option value="self-employed" {% if profile.employment_status == 'self-employed' %}selected{% endif %}>Self-Employed</option>
+                                <option value="unemployed" {% if profile.employment_status == 'unemployed' %}selected{% endif %}>Unemployed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Enrolled Program / Track</label>
+                            <input type="text" name="enrolled_program" class="form-control" value="{{ profile.enrolled_program or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Enrollment Date</label>
+                            <input type="date" name="enrollment_date" class="form-control" value="{{ profile.enrollment_date.strftime('%Y-%m-%d') if profile.enrollment_date else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Expected Completion Date</label>
+                            <input type="date" name="expected_completion_date" class="form-control" value="{{ profile.expected_completion_date.strftime('%Y-%m-%d') if profile.expected_completion_date else '' }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Current Employer</label>
+                            <input type="text" name="current_employer" class="form-control" value="{{ profile.current_employer or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Job Position</label>
+                            <input type="text" name="job_position" class="form-control" value="{{ profile.job_position or '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Work Location</label>
+                            <input type="text" name="work_location" class="form-control" value="{{ profile.work_location or '' }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Skills</label>
+                            <textarea name="skills" class="form-control" rows="3">{{ profile.skills or '' }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Certifications</label>
+                            <textarea name="certifications" class="form-control" rows="3">{{ profile.certifications or '' }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Volunteer Work</label>
+                            <textarea name="volunteer_work" class="form-control" rows="3">{{ profile.volunteer_work or '' }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Job Description</label>
+                            <textarea name="job_description" class="form-control" rows="3">{{ profile.job_description or '' }}</textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="module-step-actions">
+                    <button type="button" class="btn btn-outline" id="modulePrevStep">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" class="btn btn-outline" id="moduleNextStep">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save 4-Part Form
+                    </button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+{% endblock %}

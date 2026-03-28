@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Alumni - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    {% include 'admin_sidebar.html' %}
+    
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-user-edit"></i> Edit Alumni</h1>
+        </div>
+        
+        <form method="POST" class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-user"></i> Personal Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label required">First Name</label>
+                    <input type="text" name="first_name" class="form-control" value="{{ profile.first_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">Last Name</label>
+                    <input type="text" name="last_name" class="form-control" value="{{ profile.last_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Middle Name</label>
+                    <input type="text" name="middle_name" class="form-control" value="{{ profile.middle_name or '' }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select name="gender" class="form-control">
+                        <option value="">Select Gender</option>
+                        <option value="Male" {% if profile.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if profile.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if profile.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control" value="{{ profile.phone or '' }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control">{{ profile.address or '' }}</textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" name="city" class="form-control" value="{{ profile.city or '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Province</label>
+                    <input type="text" name="province" class="form-control" value="{{ profile.province or '' }}">
+                </div>
+            </div>
+        </form>
+        
+        <form method="POST" class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-graduation-cap"></i> Educational Background</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label required">Degree/Course</label>
+                    {% set selected_degree = profile.degree or '' %}
+                    <select name="degree" class="form-control js-degree-select" data-other-input-id="degree_other_admin_edit" required>
+                        <option value="">Select degree/course</option>
+                        {% for degree in degree_options %}
+                        <option value="{{ degree }}" {% if selected_degree == degree %}selected{% endif %}>{{ degree }}</option>
+                        {% endfor %}
+                        <option value="__other__">Other (Please specify)</option>
+                    </select>
+                    <input type="text" id="degree_other_admin_edit" class="form-control degree-other-input" placeholder="Enter full course name" hidden>
+                    <small class="form-text">Choose "Other" if the degree is not listed.</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Year Graduated</label>
+                    <select name="year_graduated" class="form-control">
+                        <option value="">Select year</option>
+                        {% for year in year_options %}
+                        <option value="{{ year }}" {% if profile.year_graduated == year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+        
+        <form method="POST" class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-briefcase"></i> Employment Information</h3>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Employment Status</label>
+                    <select name="employment_status" class="form-control">
+                        <option value="student" {% if profile.employment_status == 'student' %}selected{% endif %}>Student</option>
+                        <option value="employed" {% if profile.employment_status == 'employed' %}selected{% endif %}>Employed</option>
+                        <option value="self-employed" {% if profile.employment_status == 'self-employed' %}selected{% endif %}>Self-employed</option>
+                        <option value="unemployed" {% if profile.employment_status == 'unemployed' %}selected{% endif %}>Unemployed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Current Employer</label>
+                    <input type="text" name="current_employer" class="form-control" value="{{ profile.current_employer or '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Job Position</label>
+                    <input type="text" name="job_position" class="form-control" value="{{ profile.job_position or '' }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Salary Range</label>
+                    <select name="salary_range" class="form-control">
+                        <option value="">Select Range</option>
+                        <option value="Below 10,000" {% if profile.salary_range == 'Below 10,000' %}selected{% endif %}>Below 10,000</option>
+                        <option value="10,000 - 20,000" {% if profile.salary_range == '10,000 - 20,000' %}selected{% endif %}>10,000 - 20,000</option>
+                        <option value="20,000 - 30,000" {% if profile.salary_range == '20,000 - 30,000' %}selected{% endif %}>20,000 - 30,000</option>
+                        <option value="30,000 - 50,000" {% if profile.salary_range == '30,000 - 50,000' %}selected{% endif %}>30,000 - 50,000</option>
+                        <option value="Above 50,000" {% if profile.salary_range == 'Above 50,000' %}selected{% endif %}>Above 50,000</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Skills</label>
+                <textarea name="skills" class="form-control" placeholder="List skills separated by commas">{{ profile.skills or '' }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Update Alumni
+                </button>
+                <a href="{{ url_for('admin_alumni') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <h4>Menu</h4>
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="{{ url_for('my_profile') }}" class="sidebar-link active">
+                <i class="fas fa-user"></i> My Profile
+            </a>
+            <a href="{{ url_for('profile') }}" class="sidebar-link">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            <a href="{{ url_for('alumni_module_form') }}" class="sidebar-link">
+                <i class="fas fa-id-card"></i> 4-Part Form
+            </a>
+            <a href="{{ url_for('my_survey') }}" class="sidebar-link">
+                <i class="fas fa-poll"></i> My Survey
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <h4>Account</h4>
+            <a href="{{ url_for('logout') }}" class="sidebar-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="profile-header">
+            <div class="profile-header-content">
+                <div class="profile-avatar-large">
+                    <img src="{{ profile_photo_url(profile) }}" alt="Profile photo">
+                </div>
+                <div class="profile-info">
+                    <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+                    <p>{{ profile.degree }} - Class of {{ profile.year_graduated }}</p>
+                    <div class="profile-badges">
+                        {% if profile.employment_status == 'employed' %}
+                        <span class="profile-badge"><i class="fas fa-briefcase"></i> Employed</span>
+                        {% elif profile.employment_status == 'self-employed' %}
+                        <span class="profile-badge"><i class="fas fa-user"></i> Self-employed</span>
+                        {% elif profile.employment_status == 'unemployed' %}
+                        <span class="profile-badge"><i class="fas fa-search"></i> Unemployed</span>
+                        {% else %}
+                        <span class="profile-badge"><i class="fas fa-graduation-cap"></i> Student</span>
+                        {% endif %}
+                        
+                        {% if profile.profile_completed %}
+                        <span class="profile-badge"><i class="fas fa-check-circle"></i> Profile Complete</span>
+                        {% endif %}
+                        
+                        {% if profile.survey_completed %}
+                        <span class="profile-badge"><i class="fas fa-poll"></i> Survey Completed</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-cards">
+            <div class="dashboard-card">
+                <div class="dashboard-card-icon blue">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="dashboard-card-content">
+                    <h3>{{ profile.current_employer or 'N/A' }}</h3>
+                    <p>Current Employer</p>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="dashboard-card-icon green">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="dashboard-card-content">
+                    <h3>{{ profile.job_position or 'N/A' }}</h3>
+                    <p>Job Position</p>
+                </div>
+            </div>
+            <div class="dashboard-card">
+                <div class="dashboard-card-icon yellow">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="dashboard-card-content">
+                    <h3>{{ profile.work_location or 'N/A' }}</h3>
+                    <p>Work Location</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-user"></i> Personal Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <p>{{ profile.first_name }} {{ profile.middle_name or '' }} {{ profile.last_name }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <p>{{ profile.gender or 'Not specified' }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone</label>
+                    <p>{{ profile.phone or 'Not specified' }}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <p>{{ profile.address or 'Not specified' }}, {{ profile.city or '' }}, {{ profile.province or '' }}</p>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-graduation-cap"></i> Educational Background</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Degree/Course</label>
+                    <p>{{ profile.degree }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Year Graduated</label>
+                    <p>{{ profile.year_graduated }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Student ID</label>
+                    <p>{{ profile.student_id or 'Not specified' }}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Honors/Awards</label>
+                <p>{{ profile.honors or 'None' }}</p>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-briefcase"></i> Employment Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Employment Status</label>
+                    <p>{{ profile.employment_status|title }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Current Employer</label>
+                    <p>{{ profile.current_employer or 'Not specified' }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Job Position</label>
+                    <p>{{ profile.job_position or 'Not specified' }}</p>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Salary Range</label>
+                    <p>{{ profile.salary_range or 'Not specified' }}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Work Location</label>
+                    <p>{{ profile.work_location or 'Not specified' }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-tools"></i> Skills & Certifications</h3>
+            <div class="form-group">
+                <label class="form-label">Skills</label>
+                <p>{{ profile.skills or 'No skills listed' }}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Certifications</label>
+                <p>{{ profile.certifications or 'No certifications listed' }}</p>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('profile') }}" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit My Profile
+        </a>
+    </div>
+</div>
+{% endblock %}

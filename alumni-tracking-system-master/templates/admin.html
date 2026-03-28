@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Admin Dashboard</h1>
+            <p>System administration and management</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <!-- Stats Cards -->
+    <div class="analytics-grid" style="margin-bottom: var(--space-xl);">
+        <div class="stat-card">
+            <div class="stat-card-icon primary">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-card-value">{{ total_users }}</div>
+            <div class="stat-card-label">Total Users</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon success">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="stat-card-value">{{ total_alumni }}</div>
+            <div class="stat-card-label">Alumni Profiles</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon warning">
+                <i class="fas fa-poll"></i>
+            </div>
+            <div class="stat-card-value">{{ total_surveys }}</div>
+            <div class="stat-card-label">Survey Responses</div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-card-icon danger">
+                <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="stat-card-value">{{ total_jobs }}</div>
+            <div class="stat-card-label">Job Listings</div>
+        </div>
+    </div>
+
+    <!-- Recent Alumni -->
+    <div class="card" style="margin-bottom: var(--space-xl);">
+        <div class="card-header">
+            <h3><i class="fas fa-user-plus"></i> Recent Alumni Registrations</h3>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Degree</th>
+                        <th>Year</th>
+                        <th>Registered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alum in recent_alumni %}
+                    <tr>
+                        <td>{{ alum.first_name }} {{ alum.last_name }}</td>
+                        <td>{{ alum.user.email }}</td>
+                        <td>{{ alum.degree }}</td>
+                        <td>{{ alum.year_graduated }}</td>
+                        <td>{{ alum.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Surveys -->
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-poll"></i> Recent Survey Responses</h3>
+        </div>
+        <div class="card-body" style="padding: 0;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Alumni</th>
+                        <th>Employment Status</th>
+                        <th>Satisfaction Rating</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for survey, profile in recent_surveys %}
+                    <tr>
+                        <td>{{ profile.first_name }} {{ profile.last_name }}</td>
+                        <td>{% if survey.is_employed %}Employed{% else %}Not Employed{% endif %}</td>
+                        <td>{{ survey.overall_satisfaction }}/5</td>
+                        <td>{{ survey.created_at.strftime('%Y-%m-%d') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Quick Links -->
+    <div style="margin-top: var(--space-xl);">
+        <h3 style="margin-bottom: var(--space-lg);">Quick Links</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg);">
+            <a href="{{ url_for('analytics') }}" class="btn btn-primary">
+                <i class="fas fa-chart-bar"></i> View Analytics
+            </a>
+            <a href="{{ url_for('jobs') }}" class="btn btn-outline">
+                <i class="fas fa-briefcase"></i> Manage Jobs
+            </a>
+            <a href="{{ url_for('events') }}" class="btn btn-outline">
+                <i class="fas fa-calendar-alt"></i> Manage Events
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

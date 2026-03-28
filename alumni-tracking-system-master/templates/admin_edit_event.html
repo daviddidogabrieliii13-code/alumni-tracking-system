@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{% if event %}Edit Event{% else %}Add Event{% endif %} - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    {% include 'admin_sidebar.html' %}
+    
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-calendar"></i> {% if event %}Edit Event{% else %}Add New Event{% endif %}</h1>
+        </div>
+        
+        <form method="POST" class="form-section">
+            <div class="form-group">
+                <label class="form-label required">Event Title</label>
+                <input type="text" name="title" class="form-control" value="{{ event.title if event else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea name="description" class="form-control" rows="4">{{ event.description if event else '' }}</textarea>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Event Type</label>
+                    <select name="event_type" class="form-control">
+                        <option value="gathering" {% if event and event.event_type == 'gathering' %}selected{% endif %}>Alumni Gathering</option>
+                        <option value="career_fair" {% if event and event.event_type == 'career_fair' %}selected{% endif %}>Career Fair</option>
+                        <option value="workshop" {% if event and event.event_type == 'workshop' %}selected{% endif %}>Workshop</option>
+                        <option value="reunion" {% if event and event.event_type == 'reunion' %}selected{% endif %}>Reunion</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label required">Date & Time</label>
+                    <input type="datetime-local" name="event_date" class="form-control" value="{{ event.event_date.strftime('%Y-%m-%dT%H:%M') if event else '' }}" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="{{ event.location if event else '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Venue</label>
+                    <input type="text" name="venue" class="form-control" value="{{ event.venue if event else '' }}">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Organizer</label>
+                    <input type="text" name="organizer" class="form-control" value="{{ event.organizer if event else '' }}">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Email</label>
+                    <input type="email" name="contact_email" class="form-control" value="{{ event.contact_email if event else '' }}">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> {% if event %}Update Event{% else %}Add Event{% endif %}
+                </button>
+                <a href="{{ url_for('admin_events') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

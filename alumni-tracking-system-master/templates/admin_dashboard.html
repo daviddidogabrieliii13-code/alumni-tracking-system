@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="container">
+        <section class="portal-hero" data-portal="admin">
+            <div class="portal-hero-inner">
+                <div class="portal-hero-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <div>
+                    <div class="portal-eyebrow">Admin Portal</div>
+                    <h1>Admin Dashboard</h1>
+                    <p>Oversee alumni records, surveys, jobs, events, and platform analytics.</p>
+                    <div class="portal-tags">
+                        <span class="portal-tag">Records</span>
+                        <span class="portal-tag">Surveys</span>
+                        <span class="portal-tag">Analytics</span>
+                    </div>
+                </div>
+                <div class="portal-hero-actions">
+                    <a href="{{ url_for('analytics') }}" class="btn btn-primary btn-sm">Open Analytics</a>
+                    <a href="{{ url_for('admin_alumni') }}" class="btn btn-outline btn-sm">Manage Alumni</a>
+                    <a href="{{ url_for('admin_account_approvals') }}" class="btn btn-outline btn-sm">Account Approvals</a>
+                </div>
+            </div>
+        </section>
+        
+        <div class="portal-grid">
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h3>Total Alumni</h3>
+                        <p class="portal-card-subtitle">Active profiles</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ total_alumni | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_alumni') }}" class="btn btn-primary btn-sm">View Alumni</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-poll"></i>
+                    </div>
+                    <div>
+                        <h3>Survey Responses</h3>
+                        <p class="portal-card-subtitle">Graduate feedback</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ total_surveys | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_surveys') }}" class="btn btn-primary btn-sm">View Surveys</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div>
+                        <h3>Active Jobs</h3>
+                        <p class="portal-card-subtitle">Career postings</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ total_jobs | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_jobs') }}" class="btn btn-primary btn-sm">Manage Jobs</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div>
+                        <h3>Events</h3>
+                        <p class="portal-card-subtitle">Community calendar</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ total_events | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_events') }}" class="btn btn-primary btn-sm">Manage Events</a>
+                </div>
+            </article>
+
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div>
+                        <h3>Pending Approvals</h3>
+                        <p class="portal-card-subtitle">Admin review queue</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ pending_accounts | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_account_approvals') }}" class="btn btn-primary btn-sm">Review Accounts</a>
+                </div>
+            </article>
+
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div>
+                        <h3>Total RSVPs</h3>
+                        <p class="portal-card-subtitle">Attend responses</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ total_rsvps | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_event_rsvp_analytics') }}" class="btn btn-primary btn-sm">View RSVP Analytics</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h3>Employment Rate</h3>
+                        <p class="portal-card-subtitle">Graduate outcomes</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ employment_rate | default(0) }}%</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('analytics') }}" class="btn btn-primary btn-sm">View Analytics</a>
+                </div>
+            </article>
+        </div>
+        
+        <div class="recent-activity">
+            <h3>Recent Activity</h3>
+            <div class="activity-list">
+                <!-- Recent registrations, survey submissions, etc. -->
+                <div class="activity-item">
+                    <i class="fas fa-user-plus"></i>
+                    <span>New alumni registration: test@example.com</span>
+                    <small>2 hours ago</small>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-poll"></i>
+                    <span>New survey submitted</span>
+                    <small>1 day ago</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

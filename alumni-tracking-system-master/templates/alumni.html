@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni Directory - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Alumni Directory</h1>
+            <p>Connect with fellow WVSU Pototan graduates</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <!-- Search & Filters -->
+    <div class="job-filters" style="margin-bottom: var(--space-xl);">
+        <form method="GET" action="{{ url_for('alumni_directory') }}" class="filter-form">
+            <input type="text" name="search" class="form-control" placeholder="Search by name, course, or company..." value="{{ search if search else '' }}">
+            <select name="degree" class="form-control">
+                <option value="">All Courses</option>
+                {% for degree in degrees %}
+                <option value="{{ degree }}" {% if degree_filter == degree %}selected{% endif %}>{{ degree }}</option>
+                {% endfor %}
+            </select>
+            <select name="year" class="form-control">
+                <option value="">All Years</option>
+                {% for year in years %}
+                <option value="{{ year }}" {% if year_filter == year|string %}selected{% endif %}>{{ year }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Alumni Grid -->
+    {% if alumni.items %}
+    <div class="alumni-grid">
+        {% for alum in alumni.items %}
+        <div class="alumni-card">
+            <div class="alumni-avatar">
+                {{ alum.first_name[0] if alum.first_name }}{{ alum.last_name[0] if alum.last_name }}
+            </div>
+            <h3 class="alumni-name">{{ alum.first_name }} {{ alum.last_name }}</h3>
+            <p class="alumni-degree">{{ alum.degree }}</p>
+            <span class="alumni-year">Class of {{ alum.year_graduated }}</span>
+            {% if alum.employment_status == 'employed' or alum.employment_status == 'self-employed' %}
+            <p class="alumni-job">
+                <i class="fas fa-briefcase"></i> 
+                {% if alum.job_position %}{{ alum.job_position }}{% endif %}
+                {% if alum.current_employer %} at {{ alum.current_employer }}{% endif %}
+            </p>
+            {% endif %}
+            <div class="alumni-actions">
+                <button class="btn btn-outline btn-sm">
+                    <i class="fas fa-envelope"></i> Message
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if alumni.has_prev or alumni.has_next %}
+    <div class="pagination">
+        {% if alumni.has_prev %}
+        <a href="{{ url_for('alumni_directory', page=alumni.prev_num, search=search, degree=degree_filter, year=year_filter) }}">&laquo;</a>
+        {% endif %}
+        {% for page_num in alumni.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == alumni.page %}
+                <span>{{ page_num }}</span>
+                {% else %}
+                <a href="{{ url_for('alumni_directory', page=page_num, search=search, degree=degree_filter, year=year_filter) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+            <span>...</span>
+            {% endif %}
+        {% endfor %}
+        {% if alumni.has_next %}
+        <a href="{{ url_for('alumni_directory', page=alumni.next_num, search=search, degree=degree_filter, year=year_filter) }}">&raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-users"></i>
+        <h3>No Alumni Found</h3>
+        <p>No alumni match your search criteria. Try adjusting your filters.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

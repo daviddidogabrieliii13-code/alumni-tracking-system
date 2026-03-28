@@ -1,0 +1,50 @@
+# Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Environment variables
+.env
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+instance/database.db
+
+# Uploads (regenerate)
+static/uploads/
+static/profile_photos/
+
+# Logs
+*.log
+logs/
+
+# Migrations (regenerate)
+migrations/versions/*.py
+
+# Temp files
+*.tmp
+*.temp
+

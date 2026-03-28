@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Account Approvals - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    {% include 'admin_sidebar.html' %}
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            <div>
+                <h1><i class="fas fa-user-clock"></i> Account Approvals</h1>
+                <p class="text-muted">Review non-alumni account requests before granting portal access.</p>
+            </div>
+            <div class="portal-tag">Pending: {{ pending_count }}</div>
+        </div>
+
+        <div class="table-container" style="margin-bottom: var(--space-md);">
+            <form method="GET" action="{{ url_for('admin_account_approvals') }}" class="filter-form">
+                <select name="status" class="form-control">
+                    <option value="" {% if not status_filter %}selected{% endif %}>All statuses</option>
+                    <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+                    <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+                </select>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Apply
+                </button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Requested</th>
+                        <th>Approved</th>
+                        <th>Notes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in accounts %}
+                    <tr>
+                        <td>{{ user.email }}</td>
+                        <td>{{ role_display_name(user.role) }}</td>
+                        <td>
+                            {% if user.approval_status == 'approved' %}
+                            <span class="badge badge-success">Approved</span>
+                            {% elif user.approval_status == 'rejected' %}
+                            <span class="badge badge-danger">Rejected</span>
+                            {% else %}
+                            <span class="badge badge-warning">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ user.approval_requested_at.strftime('%Y-%m-%d %H:%M') if user.approval_requested_at else 'N/A' }}</td>
+                        <td>{{ user.approved_at.strftime('%Y-%m-%d %H:%M') if user.approved_at else 'N/A' }}</td>
+                        <td>{{ user.approval_notes or '-' }}</td>
+                        <td class="table-actions">
+                            <form method="POST" action="{{ url_for('admin_approve_account', user_id=user.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-primary" {% if user.approval_status == 'approved' %}disabled{% endif %}>
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin_reject_account', user_id=user.id) }}" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" {% if user.approval_status == 'rejected' %}disabled{% endif %}>
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">No approval records found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Job Board - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="jobs-header">
+    <div class="container">
+        <h1>Job Opportunities</h1>
+        <p>Find your dream job from our partner companies</p>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <!-- Filters -->
+    <div class="job-filters">
+        <form method="GET" action="{{ url_for('jobs') }}" class="filter-form">
+            <input type="text" name="search" class="form-control" placeholder="Search jobs..." value="{{ search if search else '' }}">
+            <select name="job_type" class="form-control">
+                <option value="">All Job Types</option>
+                <option value="full-time" {% if job_type == 'full-time' %}selected{% endif %}>Full Time</option>
+                <option value="part-time" {% if job_type == 'part-time' %}selected{% endif %}>Part Time</option>
+                <option value="contract" {% if job_type == 'contract' %}selected{% endif %}>Contract</option>
+            </select>
+            <input type="text" name="location" class="form-control" placeholder="Location" value="{{ location if location else '' }}">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Jobs List -->
+    {% if jobs.items %}
+    <div>
+        {% for job in jobs.items %}
+        <div class="job-card">
+            <div class="job-card-header">
+                <div>
+                    <h3 class="job-title">{{ job.title }}</h3>
+                    <div class="job-company">
+                        <i class="fas fa-building"></i>
+                        <span>{{ job.company }}</span>
+                    </div>
+                </div>
+                <span class="job-type {{ job.job_type }}">{{ job.job_type }}</span>
+            </div>
+            
+            <div class="job-meta">
+                <div class="job-meta-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>{{ job.location }}</span>
+                </div>
+                {% if job.salary_display %}
+                <div class="job-meta-item">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>{{ job.salary_display }}</span>
+                </div>
+                {% endif %}
+                <div class="job-meta-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Posted {{ job.posted_date.strftime('%B %d, %Y') }}</span>
+                </div>
+            </div>
+            
+            <p style="color: var(--text-secondary); margin-bottom: var(--space-md);">{{ job.description[:200] }}...</p>
+            
+            <div style="display: flex; gap: var(--space-md);">
+                <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn btn-outline btn-sm">
+                    <i class="fas fa-eye"></i> View Details
+                </a>
+                {% if job.apply_link %}
+                <a href="{{ job.apply_link }}" target="_blank" class="btn btn-primary btn-sm">
+                    <i class="fas fa-paper-plane"></i> Apply Now
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if jobs.has_prev or jobs.has_next %}
+    <div class="pagination">
+        {% if jobs.has_prev %}
+        <a href="{{ url_for('jobs', page=jobs.prev_num, job_type=job_type, location=location) }}">&laquo;</a>
+        {% endif %}
+        {% for page_num in jobs.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if page_num == jobs.page %}
+                <span>{{ page_num }}</span>
+                {% else %}
+                <a href="{{ url_for('jobs', page=page_num, job_type=job_type, location=location) }}">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+            <span>...</span>
+            {% endif %}
+        {% endfor %}
+        {% if jobs.has_next %}
+        <a href="{{ url_for('jobs', page=jobs.next_num, job_type=job_type, location=location) }}">&raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-briefcase"></i>
+        <h3>No Jobs Found</h3>
+        <p>Try adjusting your search filters or check back later.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni Portal Registration - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<section class="auth-page" data-portal="alumni">
+    <div class="auth-container">
+        <article class="auth-card auth-card-wide">
+            <header class="auth-header">
+                <div class="logo-icon auth-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h1>Alumni Portal Registration</h1>
+                <p>Create your alumni account. An OTP will be sent to complete verification.</p>
+            </header>
+
+            <div class="auth-body">
+                <form method="POST" action="{{ portal_register_url }}" class="needs-validation">
+                    <input type="hidden" name="role" value="{{ role_slug }}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">First Name</label>
+                            <input type="text" name="first_name" class="form-control" placeholder="Juan" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Last Name</label>
+                            <input type="text" name="last_name" class="form-control" placeholder="Dela Cruz" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="juan.delacruz@alumni.wvsu.edu.ph" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Degree/Course</label>
+                        {% set selected_degree = request.form.get('degree', '') %}
+                        {% set custom_degree = selected_degree if selected_degree and selected_degree not in degree_options else '' %}
+                        <select name="degree" class="form-control js-degree-select" data-other-input-id="degree_other_alumni_register" required>
+                            <option value="">Select degree/course</option>
+                            {% for degree in degree_options %}
+                                <option value="{{ degree }}" {% if selected_degree == degree %}selected{% endif %}>{{ degree }}</option>
+                            {% endfor %}
+                            <option value="__other__" {% if custom_degree %}selected{% endif %}>Other (Please specify)</option>
+                        </select>
+                        <input type="text" id="degree_other_alumni_register" class="form-control degree-other-input" placeholder="Enter full course name" value="{{ custom_degree }}" {% if not custom_degree %}hidden{% endif %}>
+                        <small class="form-text">If your course is not listed, choose "Other" and enter the full course name.</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Year Graduated</label>
+                        <select name="year_graduated" class="form-control" required>
+                            <option value="">Select year</option>
+                            {% for year in year_options %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">Password</label>
+                            <input type="password" name="password" class="form-control" minlength="8" placeholder="Create password" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Confirm Password</label>
+                            <input type="password" name="confirm_password" class="form-control" minlength="8" placeholder="Confirm password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-user-plus"></i> Register Alumni Account
+                    </button>
+                </form>
+            </div>
+
+            <footer class="auth-footer">
+                <p>Already registered? <a href="{{ portal_login_url }}">Sign in here</a></p>
+            </footer>
+        </article>
+    </div>
+</section>
+{% endblock %}

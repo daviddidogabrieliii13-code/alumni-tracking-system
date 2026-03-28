@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Analytics Dashboard</h1>
+            <p>Professional metrics for alumni outcomes, tracer surveys, and program trends.</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <div class="analytics-grid">
+        <article class="stat-card">
+            <div class="stat-card-icon primary"><i class="fas fa-users"></i></div>
+            <div class="stat-card-value">{{ total_alumni }}</div>
+            <div class="stat-card-label">Total Alumni</div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-card-icon success"><i class="fas fa-briefcase"></i></div>
+            <div class="stat-card-value">{{ employment_rate }}%</div>
+            <div class="stat-card-label">Employment Rate</div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-card-icon warning"><i class="fas fa-poll"></i></div>
+            <div class="stat-card-value">{{ survey_rate }}%</div>
+            <div class="stat-card-label">Survey Response Rate</div>
+        </article>
+        <article class="stat-card">
+            <div class="stat-card-icon danger"><i class="fas fa-briefcase"></i></div>
+            <div class="stat-card-value">{{ total_jobs }}</div>
+            <div class="stat-card-label">Job Listings</div>
+        </article>
+    </div>
+
+    <div class="chart-grid">
+        <article class="chart-card">
+            <h3><i class="fas fa-chart-pie"></i> Employment Status</h3>
+            <canvas id="employmentChart"></canvas>
+        </article>
+        <article class="chart-card">
+            <h3><i class="fas fa-chart-bar"></i> Graduates by Year</h3>
+            <canvas id="graduatesChart"></canvas>
+        </article>
+    </div>
+
+    <div class="chart-grid">
+        <article class="chart-card">
+            <h3><i class="fas fa-chart-doughnut"></i> Degree Distribution</h3>
+            <canvas id="degreesChart"></canvas>
+        </article>
+        <article class="chart-card">
+            <h3><i class="fas fa-star"></i> Survey Rating Averages</h3>
+            <canvas id="ratingsChart"></canvas>
+        </article>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(() => {
+    const commonLegend = {
+        labels: {
+            boxWidth: 14,
+            color: '#4f618a',
+            font: { family: 'Outfit', size: 12 }
+        }
+    };
+
+    const smoothAnimation = {
+        duration: 1200,
+        easing: 'easeOutQuart'
+    };
+
+    new Chart(document.getElementById('employmentChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Employed', 'Unemployed', 'Self-Employed', 'Student'],
+            datasets: [{
+                data: [{{ employed }}, {{ unemployed }}, {{ self_employed }}, {{ student }}],
+                borderWidth: 2,
+                borderColor: '#ffffff',
+                backgroundColor: ['#0f4cb7', '#b42318', '#c89b2d', '#3f6fa8'],
+                hoverOffset: 12
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: smoothAnimation,
+            plugins: {
+                legend: { ...commonLegend, position: 'bottom' }
+            }
+        }
+    });
+
+    const graduatesCtx = document.getElementById('graduatesChart').getContext('2d');
+    const barGradient = graduatesCtx.createLinearGradient(0, 0, 0, 320);
+    barGradient.addColorStop(0, '#2a70de');
+    barGradient.addColorStop(1, '#0f4cb7');
+
+    new Chart(graduatesCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ years|tojson }},
+            datasets: [{
+                label: 'Graduates',
+                data: {{ graduates_by_year|tojson }},
+                backgroundColor: barGradient,
+                borderRadius: 10,
+                maxBarThickness: 44
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: smoothAnimation,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#5a6f98' },
+                    grid: { display: false }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#5a6f98', precision: 0 },
+                    grid: { color: 'rgba(24, 53, 107, 0.10)' }
+                }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('degreesChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ degrees|tojson }},
+            datasets: [{
+                data: {{ degrees_count|tojson }},
+                borderWidth: 2,
+                borderColor: '#ffffff',
+                backgroundColor: ['#0f4cb7', '#2d6dd2', '#3f87dd', '#c89b2d', '#d5b25c', '#264f8f']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: smoothAnimation,
+            plugins: {
+                legend: { ...commonLegend, position: 'bottom' }
+            }
+        }
+    });
+
+    new Chart(document.getElementById('ratingsChart'), {
+        type: 'radar',
+        data: {
+            labels: ['Education Quality', 'Curriculum', 'Facilities', 'Satisfaction', 'Recommend'],
+            datasets: [{
+                label: 'Average Rating',
+                data: [{{ avg_education }}, {{ avg_curriculum }}, {{ avg_facilities }}, {{ avg_satisfaction }}, {{ avg_recommend }}],
+                backgroundColor: 'rgba(15, 76, 183, 0.20)',
+                borderColor: '#0f4cb7',
+                pointBackgroundColor: '#c89b2d',
+                pointBorderColor: '#ffffff',
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: smoothAnimation,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                r: {
+                    suggestedMin: 0,
+                    suggestedMax: 5,
+                    ticks: {
+                        stepSize: 1,
+                        color: '#5671a3'
+                    },
+                    grid: {
+                        color: 'rgba(21, 56, 116, 0.14)'
+                    },
+                    angleLines: {
+                        color: 'rgba(21, 56, 116, 0.14)'
+                    },
+                    pointLabels: {
+                        color: '#324f86',
+                        font: { family: 'Outfit', size: 12 }
+                    }
+                }
+            }
+        }
+    });
+})();
+</script>
+{% endblock %}

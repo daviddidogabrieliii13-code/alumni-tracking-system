@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}My Survey - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <div class="sidebar">
+        <div class="sidebar-menu">
+            <h4>Menu</h4>
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="{{ url_for('my_profile') }}" class="sidebar-link">
+                <i class="fas fa-user"></i> My Profile
+            </a>
+            <a href="{{ url_for('profile') }}" class="sidebar-link">
+                <i class="fas fa-edit"></i> Edit Profile
+            </a>
+            <a href="{{ url_for('my_survey') }}" class="sidebar-link active">
+                <i class="fas fa-poll"></i> My Survey
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <h4>Account</h4>
+            <a href="{{ url_for('logout') }}" class="sidebar-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-poll"></i> My Graduate Tracer Survey</h1>
+        </div>
+        
+        {% if survey %}
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-graduation-cap"></i> Educational Experience</h3>
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.education_quality }}/5</h3>
+                        <p>Education Quality</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.curriculum_relevance }}/5</h3>
+                        <p>Curriculum Relevance</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.facilities_rating }}/5</h3>
+                        <p>Facilities Rating</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.instructor_quality }}/5</h3>
+                        <p>Instructor Quality</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-tools"></i> Competency Assessment</h3>
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.competency_technical }}/5</h3>
+                        <p>Technical Skills</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.competency_soft }}/5</h3>
+                        <p>Soft Skills</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.competency_problem }}/5</h3>
+                        <p>Problem Solving</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.competency_communication }}/5</h3>
+                        <p>Communication</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-briefcase"></i> Employment Status</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Currently Employed</label>
+                    <p>{% if survey.is_employed %}Yes{% else %}No{% endif %}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Job Related to Degree</label>
+                    <p>{% if survey.job_related %}Yes{% else %}No{% endif %}</p>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Currently Searching for Job</label>
+                    <p>{% if survey.job_searching %}Yes{% else %}No{% endif %}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Employment Sector</label>
+                <p>{{ survey.employment_sector or 'Not specified' }}</p>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-star"></i> Overall Satisfaction</h3>
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.overall_satisfaction }}/5</h3>
+                        <p>Overall Satisfaction</p>
+                    </div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-content">
+                        <h3>{{ survey.recommend_rating }}/10</h3>
+                        <p>Recommend Rating</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Suggestions for Improvement</label>
+                <p>{{ survey.suggestions or 'No suggestions provided' }}</p>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <p class="text-muted">Survey submitted on: {{ survey.created_at.strftime('%B %d, %Y') }}</p>
+        </div>
+        
+        {% else %}
+        <div class="form-section">
+            <div class="text-center">
+                <i class="fas fa-poll" style="font-size: 4rem; color: var(--text-muted);"></i>
+                <h3>No Survey Response Yet</h3>
+                <p>You haven't completed the Graduate Tracer Survey yet.</p>
+                <a href="{{ url_for('survey') }}" class="btn btn-primary">
+                    <i class="fas fa-poll"></i> Take the Survey
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

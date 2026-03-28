@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Director Portal Registration - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<section class="auth-page" data-portal="director">
+    <div class="auth-container">
+        <article class="auth-card auth-card-wide">
+            <header class="auth-header">
+                <div class="logo-icon auth-icon"><i class="fas fa-chart-line"></i></div>
+                <h1>Director Portal Registration</h1>
+                <p>Create a director account for analytics and executive reporting access. Account activation requires admin approval after OTP verification.</p>
+            </header>
+
+            <div class="auth-body">
+                <form method="POST" action="{{ portal_register_url }}" class="needs-validation">
+                    <input type="hidden" name="role" value="{{ role_slug }}">
+                    <div class="form-group">
+                        <label class="form-label required">Director Email</label>
+                        <input type="email" name="email" class="form-control" placeholder="director@wvsu.edu.ph" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">Password</label>
+                            <input type="password" name="password" class="form-control" minlength="8" placeholder="Create password" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Confirm Password</label>
+                            <input type="password" name="confirm_password" class="form-control" minlength="8" placeholder="Confirm password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-user-plus"></i> Register Director Account
+                    </button>
+                </form>
+            </div>
+
+            <footer class="auth-footer">
+                <p>Already have director access? <a href="{{ portal_login_url }}">Sign in here</a></p>
+            </footer>
+        </article>
+    </div>
+</section>
+{% endblock %}

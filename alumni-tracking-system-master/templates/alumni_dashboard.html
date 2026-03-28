@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni Dashboard - WVSU Alumni System{% endblock %}
+
+{% block content %}
+{% set profile_completion = ((current_user.profile.profile_completed | int) * 100) if current_user.profile else 0 %}
+{% set survey_completed = current_user.profile.survey_completed if current_user.profile else false %}
+<div class="dashboard">
+    <div class="container">
+        <section class="portal-hero" data-portal="alumni">
+            <div class="portal-hero-inner">
+                <div class="portal-hero-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <div class="portal-eyebrow">Alumni Portal</div>
+                    <h1>Welcome back, {{ current_user.profile.first_name if current_user.profile else 'Alumni' }}!</h1>
+                    <p>Manage your profile, complete the tracer survey, and discover opportunities.</p>
+                    <div class="portal-tags">
+                        <span class="portal-tag">Profile</span>
+                        <span class="portal-tag">4-Part Form</span>
+                        <span class="portal-tag">Survey</span>
+                        <span class="portal-tag">Jobs</span>
+                    </div>
+                </div>
+                <div class="portal-hero-actions">
+                    <a href="{{ url_for('alumni_module_dashboard') }}" class="btn btn-outline btn-sm">Module Dashboard</a>
+                    <a href="{{ url_for('alumni_module_form') }}" class="btn btn-primary btn-sm">Open 4-Part Form</a>
+                    <a href="{{ url_for('profile') }}" class="btn btn-primary btn-sm">Update Profile</a>
+                    <a href="{{ url_for('survey') }}" class="btn btn-outline btn-sm">Take Survey</a>
+                </div>
+            </div>
+        </section>
+        
+        <div class="portal-grid">
+            <article class="portal-card" data-accent="alumni">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <h3>Profile Completion</h3>
+                        <p class="portal-card-subtitle">Unlock networking</p>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ profile_completion }}%"></div>
+                </div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('profile') }}" class="btn btn-primary btn-sm">Update Profile</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="alumni">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-poll"></i>
+                    </div>
+                    <div>
+                        <h3>Tracer Survey</h3>
+                        <p class="portal-card-subtitle">One-time feedback</p>
+                    </div>
+                </div>
+                <div class="status-badge {% if survey_completed %}completed{% else %}pending{% endif %}">
+                    {% if survey_completed %}
+                        <i class="fas fa-check"></i> Completed
+                    {% else %}
+                        <i class="fas fa-clock"></i> Pending
+                    {% endif %}
+                </div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('survey') }}" class="btn btn-primary btn-sm">Take Survey</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="alumni">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h3>Alumni Network</h3>
+                        <p class="portal-card-subtitle">Connect and collaborate</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ (total_alumni | default(1)) - 1 }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('alumni_directory') }}" class="btn btn-outline btn-sm">View Directory</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="alumni">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div>
+                        <h3>Career Opportunities</h3>
+                        <p class="portal-card-subtitle">Active postings</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ active_jobs | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('jobs') }}" class="btn btn-outline btn-sm">Browse Jobs</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}

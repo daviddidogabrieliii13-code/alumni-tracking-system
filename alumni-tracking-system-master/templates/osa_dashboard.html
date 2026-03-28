@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}OSA Dashboard - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="container">
+        <section class="portal-hero" data-portal="osa">
+            <div class="portal-hero-inner">
+                <div class="portal-hero-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div>
+                    <div class="portal-eyebrow">OSA Portal</div>
+                    <h1>OSA Dashboard</h1>
+                    <p>Coordinate alumni events, track engagement, and capture feedback.</p>
+                    <div class="portal-tags">
+                        <span class="portal-tag">Events</span>
+                        <span class="portal-tag">RSVPs</span>
+                        <span class="portal-tag">Feedback</span>
+                    </div>
+                </div>
+                <div class="portal-hero-actions">
+                    <a href="{{ url_for('admin_events') }}" class="btn btn-primary btn-sm">Manage Events</a>
+                    <a href="{{ url_for('admin_event_rsvp_analytics') }}" class="btn btn-outline btn-sm">View RSVPs</a>
+                </div>
+            </div>
+        </section>
+        
+        <div class="portal-grid">
+            <article class="portal-card" data-accent="osa">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h3>Upcoming Events</h3>
+                        <p class="portal-card-subtitle">Scheduled activities</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ upcoming_events | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_events') }}" class="btn btn-primary btn-sm">Manage Events</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="osa">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h3>Event RSVPs</h3>
+                        <p class="portal-card-subtitle">Participation count</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ rsvp_count | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_event_rsvp_analytics') }}" class="btn btn-primary btn-sm">View RSVPs</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="osa">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div>
+                        <h3>Feedback</h3>
+                        <p class="portal-card-subtitle">Alumni insights</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Review comments and suggestions from recent events.</p>
+                <div class="portal-card-actions">
+                    <a href="#" class="btn btn-primary btn-sm">View Feedback</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="osa">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h3>Engagement Metrics</h3>
+                        <p class="portal-card-subtitle">Attendance trends</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Track participation rates across events and cohorts.</p>
+                <div class="portal-card-actions">
+                    <a href="#" class="btn btn-primary btn-sm">View Metrics</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni Module Dashboard - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Alumni Module Dashboard</h1>
+            <p>Monitor your 4-part form progress and keep your details complete.</p>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <h4>Alumni Module</h4>
+            <a href="{{ url_for('alumni_module_dashboard') }}" class="sidebar-link active">
+                <i class="fas fa-chart-pie"></i> Module Dashboard
+            </a>
+            <a href="{{ url_for('alumni_module_form') }}" class="sidebar-link">
+                <i class="fas fa-id-card"></i> 4-Part Form
+            </a>
+            <a href="{{ url_for('alumni_module_profile') }}" class="sidebar-link">
+                <i class="fas fa-address-card"></i> Profile View
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                <i class="fas fa-tachometer-alt"></i> Main Dashboard
+            </a>
+        </div>
+        <div class="sidebar-profile">
+            <div class="sidebar-avatar">
+                <img src="{{ profile_photo_url(profile) }}" alt="Profile photo">
+            </div>
+            <h4>{{ profile.first_name or 'Alumni' }} {{ profile.last_name or '' }}</h4>
+            <p>{{ profile.degree or 'Degree not set' }}</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section class="profile-header">
+            <div class="profile-header-content">
+                <div class="profile-avatar-large">
+                    <img src="{{ profile_photo_url(profile) }}" alt="Profile photo">
+                </div>
+                <div>
+                    <h1>{{ profile.first_name or 'Alumni' }} {{ profile.last_name or '' }}</h1>
+                    <p>{{ profile.degree or 'Degree not set' }}{% if profile.year_graduated %} - Class of {{ profile.year_graduated }}{% endif %}</p>
+                    <div class="profile-badges">
+                        <span class="profile-badge"><i class="fas fa-percentage"></i> Overall {{ overall_completion }}%</span>
+                        <span class="profile-badge"><i class="fas fa-shield-alt"></i> Secure Profile</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="dashboard-cards">
+            <article class="dashboard-card">
+                <div class="dashboard-card-icon blue"><i class="fas fa-user"></i></div>
+                <div class="dashboard-card-content">
+                    <h3>{{ personal_completion }}%</h3>
+                    <p>Personal Information</p>
+                </div>
+            </article>
+            <article class="dashboard-card">
+                <div class="dashboard-card-icon green"><i class="fas fa-graduation-cap"></i></div>
+                <div class="dashboard-card-content">
+                    <h3>{{ education_completion }}%</h3>
+                    <p>Education Section</p>
+                </div>
+            </article>
+            <article class="dashboard-card">
+                <div class="dashboard-card-icon yellow"><i class="fas fa-users"></i></div>
+                <div class="dashboard-card-content">
+                    <h3>{{ family_completion }}%</h3>
+                    <p>Family Section</p>
+                </div>
+            </article>
+            <article class="dashboard-card">
+                <div class="dashboard-card-icon red"><i class="fas fa-user-check"></i></div>
+                <div class="dashboard-card-content">
+                    <h3>{{ enrollment_completion }}%</h3>
+                    <p>Enrollment Section</p>
+                </div>
+            </article>
+        </div>
+
+        <section class="profile-progress">
+            <div class="progress-header">
+                <h3>Overall Form Completion</h3>
+                <strong>{{ overall_completion }}%</strong>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ overall_completion }}%;"></div>
+            </div>
+            <p class="text-muted" style="margin-top: var(--space-md);">
+                Keep your alumni details updated to improve reports, engagement, and tracking quality.
+            </p>
+        </section>
+
+        <section class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-bolt"></i> Quick Actions</h3>
+            <div class="module-form-actions">
+                <a href="{{ url_for('alumni_module_form') }}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Edit 4-Part Form
+                </a>
+                <a href="{{ url_for('alumni_module_profile') }}" class="btn btn-outline">
+                    <i class="fas fa-eye"></i> View Profile
+                </a>
+                <a href="{{ url_for('survey') }}" class="btn btn-outline">
+                    <i class="fas fa-poll"></i> Open Survey
+                </a>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}

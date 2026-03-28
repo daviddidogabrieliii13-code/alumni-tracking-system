@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni Module Profile - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>Alumni Module Profile View</h1>
+            <p>Read-only summary of your personal, education, family, and enrollment records.</p>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <div class="sidebar-menu">
+            <h4>Alumni Module</h4>
+            <a href="{{ url_for('alumni_module_dashboard') }}" class="sidebar-link">
+                <i class="fas fa-chart-pie"></i> Module Dashboard
+            </a>
+            <a href="{{ url_for('alumni_module_form') }}" class="sidebar-link">
+                <i class="fas fa-id-card"></i> 4-Part Form
+            </a>
+            <a href="{{ url_for('alumni_module_profile') }}" class="sidebar-link active">
+                <i class="fas fa-address-card"></i> Profile View
+            </a>
+        </div>
+        <div class="sidebar-profile">
+            <div class="sidebar-avatar">
+                <img src="{{ profile_photo_url(profile) }}" alt="Profile photo">
+            </div>
+            <h4>{{ profile.first_name or 'Alumni' }} {{ profile.last_name or '' }}</h4>
+            <p>{{ profile.degree or 'Degree not set' }}</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <section class="profile-header">
+            <div class="profile-header-content">
+                <div class="profile-avatar-large">
+                    <img src="{{ profile_photo_url(profile) }}" alt="Profile photo">
+                </div>
+                <div class="profile-info">
+                    <h1>{{ profile.first_name or 'Alumni' }} {{ profile.last_name or '' }}</h1>
+                    <p>{{ profile.degree or 'Degree not set' }}{% if profile.year_graduated %} - Class of {{ profile.year_graduated }}{% endif %}</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-user"></i> Personal Information</h3>
+            <div class="profile-grid">
+                <div><strong>Email:</strong> {{ current_user.email or 'Not provided' }}</div>
+                <div><strong>Phone:</strong> {{ profile.phone or 'Not provided' }}</div>
+                <div><strong>Date of Birth:</strong> {{ profile.date_of_birth.strftime('%B %d, %Y') if profile.date_of_birth else 'Not provided' }}</div>
+                <div><strong>Gender:</strong> {{ profile.gender or 'Not provided' }}</div>
+                <div><strong>Civil Status:</strong> {{ profile.civil_status or 'Not provided' }}</div>
+            </div>
+            <p style="margin-top: var(--space-md);"><strong>Address:</strong> {{ profile.address or 'Not provided' }}{% if profile.city %}, {{ profile.city }}{% endif %}{% if profile.province %}, {{ profile.province }}{% endif %}</p>
+        </section>
+
+        <section class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-graduation-cap"></i> Educational Background</h3>
+            <div class="profile-grid">
+                <div><strong>Degree:</strong> {{ profile.degree or 'Not provided' }}</div>
+                <div><strong>Student ID:</strong> {{ profile.student_id or 'Not provided' }}</div>
+                <div><strong>Year Graduated:</strong> {{ profile.year_graduated or 'Not provided' }}</div>
+                <div><strong>Honors:</strong> {{ profile.honors or 'Not provided' }}</div>
+            </div>
+            <p style="margin-top: var(--space-md);"><strong>Activities:</strong> {{ profile.activities or 'Not provided' }}</p>
+        </section>
+
+        <section class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-users"></i> Family Information</h3>
+            <div class="profile-grid">
+                <div><strong>Father:</strong> {{ profile.father_name or 'Not provided' }}</div>
+                <div><strong>Father Contact:</strong> {{ profile.father_contact or 'Not provided' }}</div>
+                <div><strong>Mother:</strong> {{ profile.mother_name or 'Not provided' }}</div>
+                <div><strong>Mother Contact:</strong> {{ profile.mother_contact or 'Not provided' }}</div>
+                <div><strong>Guardian:</strong> {{ profile.guardian_name or 'Not provided' }}</div>
+                <div><strong>Guardian Contact:</strong> {{ profile.guardian_contact or 'Not provided' }}</div>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <h3 class="form-section-title"><i class="fas fa-user-check"></i> Enrollment Information</h3>
+            <div class="profile-grid">
+                <div><strong>Enrollment Status:</strong> {{ profile.enrollment_status or 'Not provided' }}</div>
+                <div><strong>Employment Status:</strong> {{ profile.employment_status or 'Not provided' }}</div>
+                <div><strong>Enrolled Program:</strong> {{ profile.enrolled_program or 'Not provided' }}</div>
+                <div><strong>Enrollment Date:</strong> {{ profile.enrollment_date.strftime('%B %d, %Y') if profile.enrollment_date else 'Not provided' }}</div>
+                <div><strong>Expected Completion:</strong> {{ profile.expected_completion_date.strftime('%B %d, %Y') if profile.expected_completion_date else 'Not provided' }}</div>
+                <div><strong>Current Employer:</strong> {{ profile.current_employer or 'Not provided' }}</div>
+                <div><strong>Job Position:</strong> {{ profile.job_position or 'Not provided' }}</div>
+                <div><strong>Work Location:</strong> {{ profile.work_location or 'Not provided' }}</div>
+            </div>
+            <p style="margin-top: var(--space-md);"><strong>Skills:</strong> {{ profile.skills or 'Not provided' }}</p>
+        </section>
+
+        <a href="{{ url_for('alumni_module_form') }}" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Edit 4-Part Form
+        </a>
+    </main>
+</div>
+{% endblock %}

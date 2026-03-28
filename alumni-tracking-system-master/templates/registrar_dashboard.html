@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar Dashboard - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="container">
+        <section class="portal-hero" data-portal="registrar">
+            <div class="portal-hero-inner">
+                <div class="portal-hero-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div>
+                    <div class="portal-eyebrow">Registrar Portal</div>
+                    <h1>Registrar Dashboard</h1>
+                    <p>Verify alumni records, manage credentials, and maintain official data.</p>
+                    <div class="portal-tags">
+                        <span class="portal-tag">Verification</span>
+                        <span class="portal-tag">Records</span>
+                        <span class="portal-tag">Reporting</span>
+                    </div>
+                </div>
+                <div class="portal-hero-actions">
+                    <a href="#" class="btn btn-primary btn-sm">Review Pending</a>
+                    <a href="{{ url_for('admin_alumni') }}" class="btn btn-outline btn-sm">View Records</a>
+                </div>
+            </div>
+        </section>
+        
+        <div class="portal-grid">
+            <article class="portal-card" data-accent="registrar">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div>
+                        <h3>Pending Verification</h3>
+                        <p class="portal-card-subtitle">Awaiting review</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ pending_verifications | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="#" class="btn btn-primary btn-sm">Review Pending</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="registrar">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h3>Verified Alumni</h3>
+                        <p class="portal-card-subtitle">Approved records</p>
+                    </div>
+                </div>
+                <div class="stat-value">{{ verified_alumni | default(0) }}</div>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('admin_alumni') }}" class="btn btn-primary btn-sm">View Records</a>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="registrar">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div>
+                        <h3>Student ID Lookup</h3>
+                        <p class="portal-card-subtitle">Quick verification</p>
+                    </div>
+                </div>
+                <div class="search-box">
+                    <input type="text" placeholder="Enter Student ID">
+                    <button class="btn btn-primary btn-sm">Search</button>
+                </div>
+            </article>
+            
+            <article class="portal-card" data-accent="registrar">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div>
+                        <h3>Batch Analytics</h3>
+                        <p class="portal-card-subtitle">Graduates by cohort</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Review yearly graduation totals by program.</p>
+                <div class="portal-card-actions">
+                    <a href="#" class="btn btn-primary btn-sm">View Reports</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} - Job Details{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <div class="page-header-content">
+            <h1>{{ job.title }}</h1>
+            <p>{{ job.company }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="padding-bottom: var(--space-xxl);">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-xl);">
+        <!-- Job Details -->
+        <div>
+            <div class="card" style="margin-bottom: var(--space-lg);">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-lg);">
+                        <div>
+                            <h2 style="margin-bottom: var(--space-sm);">{{ job.title }}</h2>
+                            <p style="font-size: 1.1rem; color: var(--text-secondary);">
+                                <i class="fas fa-building"></i> {{ job.company }}
+                            </p>
+                        </div>
+                        <span class="job-type {{ job.job_type }}">{{ job.job_type }}</span>
+                    </div>
+                    
+                    <div style="display: flex; flex-wrap: wrap; gap: var(--space-lg); margin-bottom: var(--space-lg);">
+                        <div>
+                            <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
+                            <span>{{ job.location }}</span>
+                        </div>
+                        {% if job.salary_display %}
+                        <div>
+                            <i class="fas fa-money-bill-wave" style="color: var(--primary);"></i>
+                            <span>{{ job.salary_display }}</span>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <i class="fas fa-calendar" style="color: var(--primary);"></i>
+                            <span>Posted {{ job.posted_date.strftime('%B %d, %Y') }}</span>
+                        </div>
+                    </div>
+                    
+                    {% if job.description %}
+                    <h3 style="margin-bottom: var(--space-md);">Job Description</h3>
+                    <p style="line-height: 1.8; margin-bottom: var(--space-lg);">{{ job.description }}</p>
+                    {% endif %}
+                    
+                    {% if job.requirements %}
+                    <h3 style="margin-bottom: var(--space-md);">Requirements</h3>
+                    <p style="line-height: 1.8;">{{ job.requirements }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h3>Apply for this Job</h3>
+                </div>
+                <div class="card-body">
+                    {% if job.apply_link %}
+                    <a href="{{ job.apply_link }}" target="_blank" class="btn btn-primary" style="width: 100%; margin-bottom: var(--space-md);">
+                        <i class="fas fa-paper-plane"></i> Apply Now
+                    </a>
+                    {% else %}
+                    <button class="btn btn-primary" style="width: 100%; margin-bottom: var(--space-md);" disabled>
+                        Applications Closed
+                    </button>
+                    {% endif %}
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); text-align: center;">
+                        Direct applications through company website
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: var(--space-lg);">
+                <div class="card-header">
+                    <h3>Share this Job</h3>
+                </div>
+                <div class="card-body">
+                    <div style="display: flex; gap: var(--space-md); justify-content: center;">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fab fa-facebook-f"></i>
+                        </button>
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fab fa-twitter"></i>
+                        </button>
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fab fa-linkedin-in"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

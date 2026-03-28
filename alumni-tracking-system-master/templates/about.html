@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}About - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>About the Alumni Tracking System</h1>
+        <p>Connecting WVSU Pototan alumni with opportunities and the university</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="section">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Vision, Mission, and Core Values</h2>
+                <p><strong>Vision:</strong> A research university advancing quality education towards societal transformation and global recognition.</p>
+                <p><strong>Mission:</strong> Develop life-long learners empowered to generate knowledge and technology, and transform communities as agents of change.</p>
+                <p><strong>Core Values:</strong></p>
+                <div class="core-values" style="margin-bottom: var(--space-md);">
+                    <span>Excellence</span>
+                    <span>Creativity and Innovation</span>
+                    <span>Service</span>
+                </div>
+                <p>The alumni tracking and graduate tracer system supports this direction by strengthening lifelong connections, evidence-based program improvement, and responsive service to graduates.</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Tracer Study</h3>
+                        <p>Track graduate employment outcomes and program effectiveness</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Alumni Network</h3>
+                        <p>Connect with fellow graduates and build professional relationships</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3>Career Services</h3>
+                        <p>Access job opportunities posted by alumni and partners</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Events</h3>
+                        <p>Stay updated with alumni gatherings and university events</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="stats-card">
+                    <h3>System Stats</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <span class="stat-number">{{ total_alumni }}</span>
+                            <span>Registered Alumni</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">{{ employment_rate }}%</span>
+                            <span>Employment Rate</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">{{ survey_responses }}</span>
+                            <span>Survey Responses</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

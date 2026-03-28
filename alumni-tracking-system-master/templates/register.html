@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Register - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-icon" style="width: 60px; height: 60px; margin: 0 auto var(--space-md);">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h2>Join Our Alumni Network</h2>
+                <p>Create your alumni account today</p>
+                <div class="auth-stepper">
+                    <div class="auth-stepper-item active">
+                        <span>1</span>
+                        <p>Create account</p>
+                    </div>
+                    <div class="auth-stepper-item">
+                        <span>2</span>
+                        <p>Verify OTP</p>
+                    </div>
+                    <div class="auth-stepper-item">
+                        <span>3</span>
+                        <p>Survey</p>
+                    </div>
+                    <div class="auth-stepper-item">
+                        <span>4</span>
+                        <p>Profile</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="auth-body">
+                <form method="POST" action="{{ url_for('register') }}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label required">First Name</label>
+                            <input type="text" name="first_name" class="form-control" placeholder="Juan" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label required">Last Name</label>
+                            <input type="text" name="last_name" class="form-control" placeholder="Dela Cruz" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="juan.delacruz@alumni.wvsu.edu.ph" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Degree/Course</label>
+                        <select name="degree" class="form-control js-degree-select" data-other-input-id="degree_other_legacy_register" required>
+                            <option value="">Select your course</option>
+                            <option value="Bachelor of Elementary Education">Bachelor of Elementary Education</option>
+                            <option value="Bachelor of Secondary Education - English">Bachelor of Secondary Education (English)</option>
+                            <option value="Bachelor of Secondary Education - Math">Bachelor of Secondary Education (Math)</option>
+                            <option value="Bachelor of Secondary Education - Social Studies">Bachelor of Secondary Education (Social Studies)</option>
+                            <option value="Bachelor of Science in Industrial Technology - Drafting Technology">Bachelor of Science in Industrial Technology (Drafting Technology)</option>
+                            <option value="Bachelor of Science in Industrial Technology - Automotive Technology">Bachelor of Science in Industrial Technology (Automotive Technology)</option>
+                            <option value="Bachelor of Science in Industrial Technology - Electrical Technology">Bachelor of Science in Industrial Technology (Electrical Technology)</option>
+                            <option value="Bachelor of Science in Industrial Technology - Electronics Technology">Bachelor of Science in Industrial Technology (Electronics Technology)</option>
+                            <option value="Bachelor of Science in Industrial Technology - Welding Technology">Bachelor of Science in Industrial Technology (Welding Technology)</option>
+                            <option value="Bachelor of Science in Hospitality Management (BSHM)">Bachelor of Science in Hospitality Management (BSHM)</option>
+                            <option value="Bachelor of Science in Information Systems (BSIS)">Bachelor of Science in Information Systems (BSIS)</option>
+                            <option value="Bachelor of Science in Information Technology (BSIT)">Bachelor of Science in Information Technology (BSIT)</option>
+                            <option value="Bachelor of Technical-Vocational Education (BTVE)">Bachelor of Technical-Vocational Education (BTVE)</option>
+                            <option value="__other__">Other (Please specify)</option>
+                        </select>
+                        <input type="text" id="degree_other_legacy_register" class="form-control degree-other-input" placeholder="Enter full course name" hidden>
+                        <small class="form-text">If your course is not listed, choose "Other" and enter the full course name.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Year Graduated</label>
+                        <select name="year_graduated" class="form-control" required>
+                            <option value="">Select year</option>
+                            {% for year in range(2024, 1970, -1) %}
+                            <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Create a strong password" required minlength="8">
+                        <small class="form-text text-muted">Use at least 8 characters with letters and numbers</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm your password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" required>
+                            <label class="form-check-label" for="terms">I agree to the <a href="#" style="color: var(--accent-cyan);">Terms of Service</a> and <a href="#" style="color: var(--accent-cyan);">Privacy Policy</a></label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fas fa-user-plus"></i> Send OTP & Create Account
+                    </button>
+                </form>
+            </div>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

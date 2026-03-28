@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}WVSU Pototan - Online Alumni Tracking & Graduate Tracer Study System{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Western Visayas State University</span>
+            </div>
+            <h1 class="hero-title">
+                Online Alumni Tracking & <br><span>Graduate Tracer Study System</span>
+            </h1>
+            <p class="hero-subtitle">
+                Connecting WVSU Pototan Campus alumni to their future. Track your career journey, 
+                stay connected with fellow graduates, and help us improve our education system through valuable feedback.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('role_register', role='alumni') }}" class="btn btn-primary btn-lg hero-auth-btn">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+                <a href="{{ url_for('role_login', role='alumni') }}" class="btn btn-outline btn-lg hero-auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+            <div class="hero-guide">
+                <div class="guide-header">
+                    <div>
+                        <div class="guide-eyebrow">Quick Start</div>
+                        <h3>Step-by-step guide</h3>
+                        <p class="guide-desc">Complete your alumni profile in minutes and unlock campus updates.</p>
+                    </div>
+                    <div class="guide-chip">
+                        <i class="fas fa-route"></i>
+                        <span>4 steps</span>
+                    </div>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create your account</h4>
+                            <p>Register using your WVSU email to get started.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Verify with OTP</h4>
+                            <p>Confirm your identity with the one-time code.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Answer the tracer survey</h4>
+                            <p>Share your outcomes to improve programs.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Finish your profile</h4>
+                            <p>Add experience and connect with alumni.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ total_alumni | default(0) }}+</div>
+                    <div class="hero-stat-label">Alumni Registered</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ employed_count | default(0) }}+</div>
+                    <div class="hero-stat-label">Employed Graduates</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ survey_responses | default(0) }}+</div>
+                    <div class="hero-stat-label">Survey Responses</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">{{ active_jobs | default(0) }}+</div>
+                    <div class="hero-stat-label">Job Opportunities</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-subtitle">Why Join?</div>
+            <h2 class="section-title">Your Alumni Portal</h2>
+            <p class="section-desc">Stay connected and advance your career with our comprehensive alumni platform.</p>
+        </div>
+        <div class="d-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-xl);">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="feature-title">Career Opportunities</h3>
+                <p class="feature-desc">Access exclusive job postings from top employers looking for WVSU graduates.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3 class="feature-title">Alumni Network</h3>
+                <p class="feature-desc">Connect with thousands of successful WVSU alumni across industries.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-poll"></i>
+                </div>
+                <h3 class="feature-title">Tracer Survey</h3>
+                <p class="feature-desc">Share your career journey to help improve our academic programs.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section institution-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-subtitle">WVSU Pototan</div>
+            <h2 class="section-title">Mission, Vision, and Core Values</h2>
+            <p class="section-desc">The official institutional direction guiding alumni engagement and community impact.</p>
+        </div>
+        <div class="institution-grid">
+            <article class="institution-card">
+                <div class="institution-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Vision</h3>
+                <p>
+                    A research university advancing quality education towards societal transformation and global recognition.
+                </p>
+            </article>
+            <article class="institution-card">
+                <div class="institution-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Mission</h3>
+                <p>
+                    Develop life-long learners empowered to generate knowledge and technology, and transform communities as agents of change.
+                </p>
+            </article>
+            <article class="institution-card">
+                <div class="institution-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3>Core Values</h3>
+                <div class="core-values">
+                    <span>Excellence</span>
+                    <span>Creativity and Innovation</span>
+                    <span>Service</span>
+                </div>
+                <p>These values guide teaching, research, and community extension across WVSU Pototan Campus.</p>
+            </article>
+        </div>
+        <div class="institution-actions">
+            <a href="{{ url_for('about') }}" class="btn btn-primary btn-lg">Explore About WVSU Alumni</a>
+            <a href="{{ url_for('contact') }}" class="btn btn-login btn-lg">Connect with Us</a>
+        </div>
+    </div>
+</section>
+
+<section class="section portal-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-subtitle">Five Portals</div>
+            <h2 class="section-title">Choose the right portal</h2>
+            <p class="section-desc">Purpose-built access for alumni and campus leadership.</p>
+        </div>
+        <div class="portal-grid">
+            <article class="portal-card" data-accent="alumni">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div>
+                        <h3>Alumni Portal</h3>
+                        <p class="portal-card-subtitle">For graduates</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Update your profile, complete the tracer survey, and find opportunities.</p>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('role_register', role='alumni') }}" class="btn btn-primary btn-sm">Register</a>
+                    <a href="{{ url_for('role_login', role='alumni') }}" class="btn btn-login btn-sm">Sign in</a>
+                </div>
+            </article>
+
+            <article class="portal-card" data-accent="admin">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h3>Admin Portal</h3>
+                        <p class="portal-card-subtitle">System control</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Manage alumni records, surveys, jobs, and platform analytics.</p>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('role_register', role='admin') }}" class="btn btn-primary btn-sm">Register</a>
+                    <a href="{{ url_for('role_login', role='admin') }}" class="btn btn-login btn-sm">Sign in</a>
+                </div>
+            </article>
+            <article class="portal-card" data-accent="director">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                        <h3>Director Portal</h3>
+                        <p class="portal-card-subtitle">Executive reports</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Review institutional outcomes, employment rates, and KPI dashboards.</p>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('role_register', role='director') }}" class="btn btn-primary btn-sm">Register</a>
+                    <a href="{{ url_for('role_login', role='director') }}" class="btn btn-login btn-sm">Sign in</a>
+                </div>
+            </article>
+            <article class="portal-card" data-accent="registrar">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div>
+                        <h3>Registrar Portal</h3>
+                        <p class="portal-card-subtitle">Verification</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Validate alumni records, handle verification, and manage batch data.</p>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('role_register', role='registrar') }}" class="btn btn-primary btn-sm">Register</a>
+                    <a href="{{ url_for('role_login', role='registrar') }}" class="btn btn-login btn-sm">Sign in</a>
+                </div>
+            </article>
+            <article class="portal-card" data-accent="osa">
+                <div class="portal-card-header">
+                    <div class="portal-card-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <h3>OSA Portal</h3>
+                        <p class="portal-card-subtitle">Engagement</p>
+                    </div>
+                </div>
+                <p class="portal-card-desc">Plan alumni events, track RSVPs, and review engagement feedback.</p>
+                <div class="portal-card-actions">
+                    <a href="{{ url_for('role_register', role='osa') }}" class="btn btn-primary btn-sm">Register</a>
+                    <a href="{{ url_for('role_login', role='osa') }}" class="btn btn-login btn-sm">Sign in</a>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}

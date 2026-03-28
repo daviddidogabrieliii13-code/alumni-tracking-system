@@ -1,0 +1,43 @@
+<div class="sidebar">
+    <div class="sidebar-menu">
+        <h4>Main</h4>
+        <a href="{{ url_for('role_dashboard', role='admin') }}" class="sidebar-link {% if request.path.startswith('/portal/admin/dashboard') %}active{% endif %}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="{{ url_for('analytics') }}" class="sidebar-link {% if request.endpoint == 'analytics' %}active{% endif %}">
+            <i class="fas fa-chart-bar"></i> Analytics
+        </a>
+    </div>
+    
+    <div class="sidebar-menu">
+        <h4>Management</h4>
+        <a href="{{ url_for('admin_alumni') }}" class="sidebar-link {% if 'admin_alumni' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-users"></i> Alumni
+        </a>
+        <a href="{{ url_for('admin_jobs') }}" class="sidebar-link {% if 'admin_jobs' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-briefcase"></i> Jobs
+        </a>
+        <a href="{{ url_for('admin_events') }}" class="sidebar-link {% if 'admin_events' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-calendar"></i> Events
+        </a>
+        <a href="{{ url_for('admin_event_rsvp_analytics') }}" class="sidebar-link {% if 'admin_event_rsvp_analytics' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-user-check"></i> RSVP Analytics
+        </a>
+        <a href="{{ url_for('admin_account_approvals') }}" class="sidebar-link {% if 'admin_account_approvals' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-user-clock"></i> Account Approvals
+        </a>
+        <a href="{{ url_for('admin_surveys') }}" class="sidebar-link {% if 'admin_surveys' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-poll"></i> Surveys
+        </a>
+        <a href="{{ url_for('admin_system_reset') }}" class="sidebar-link {% if 'admin_system_reset' in request.endpoint %}active{% endif %}">
+            <i class="fas fa-database"></i> System Reset
+        </a>
+    </div>
+    
+    <div class="sidebar-menu">
+        <h4>Account</h4>
+        <a href="{{ url_for('logout') }}" class="sidebar-link">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</div>

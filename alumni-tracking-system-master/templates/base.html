@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WVSU Pototan - Alumni Tracking System{% endblock %}</title>
+    <script>
+        (function () {
+            try {
+                if (window.localStorage.getItem("wvsu_theme") === "dark") {
+                    document.documentElement.setAttribute("data-theme", "dark");
+                }
+            } catch (_error) {}
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="{{ campus_logo_static_path }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-logo">
+                <div class="logo-icon">
+                    <img src="{{ campus_logo_static_path }}" alt="WVSU Pototan Campus logo" class="campus-logo">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">WVSU</span>
+                    <span class="logo-subtitle">Pototan</span>
+                </div>
+            </a>
+
+            <button class="nav-toggle" id="navToggle" type="button" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item"><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">About</a></li>
+                <li class="nav-item"><a href="{{ url_for('alumni_directory') }}" class="nav-link {% if request.endpoint == 'alumni_directory' %}active{% endif %}">Alumni</a></li>
+                <li class="nav-item"><a href="{{ url_for('jobs') }}" class="nav-link {% if request.endpoint == 'jobs' %}active{% endif %}">Jobs</a></li>
+                <li class="nav-item"><a href="{{ url_for('events') }}" class="nav-link {% if request.endpoint == 'events' %}active{% endif %}">Events</a></li>
+                <li class="nav-item"><a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+                <li class="nav-item">
+                    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode" aria-pressed="false">
+                        <i class="fas fa-moon"></i>
+                        <span class="theme-toggle-label">Dark Mode</span>
+                    </button>
+                </li>
+
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i>
+                            {{ role_portals[current_role]['label'] if current_role in role_portals else 'Account' }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ current_dashboard_url }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+
+                            {% if current_role == 'alumni' %}
+                                <li><a href="{{ url_for('alumni_module_dashboard') }}"><i class="fas fa-layer-group"></i> Alumni Module</a></li>
+                                <li><a href="{{ url_for('alumni_module_form') }}"><i class="fas fa-id-card"></i> 4-Part Form</a></li>
+                                <li><a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> My Profile</a></li>
+                                <li><a href="{{ url_for('alumni_module_profile') }}"><i class="fas fa-address-card"></i> Profile View</a></li>
+                                <li><a href="{{ url_for('survey') }}"><i class="fas fa-poll"></i> Tracer Survey</a></li>
+                                <li><a href="{{ url_for('my_survey') }}"><i class="fas fa-file-alt"></i> My Survey</a></li>
+                            {% elif current_role == 'admin' %}
+                                <li><a href="{{ url_for('analytics') }}"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                                <li><a href="{{ url_for('admin_alumni') }}"><i class="fas fa-users"></i> Alumni</a></li>
+                                <li><a href="{{ url_for('admin_jobs') }}"><i class="fas fa-briefcase"></i> Jobs</a></li>
+                                <li><a href="{{ url_for('admin_events') }}"><i class="fas fa-calendar"></i> Events</a></li>
+                                <li><a href="{{ url_for('admin_event_rsvp_analytics') }}"><i class="fas fa-user-check"></i> RSVP Analytics</a></li>
+                                <li><a href="{{ url_for('admin_account_approvals') }}"><i class="fas fa-user-clock"></i> Account Approvals</a></li>
+                                <li><a href="{{ url_for('admin_surveys') }}"><i class="fas fa-poll"></i> Surveys</a></li>
+                                <li><a href="{{ url_for('admin_system_reset') }}"><i class="fas fa-database"></i> System Reset</a></li>
+                            {% elif current_role == 'director' %}
+                                <li><a href="{{ url_for('analytics') }}"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                                <li><a href="{{ url_for('admin_surveys') }}"><i class="fas fa-poll"></i> Survey Insights</a></li>
+                            {% elif current_role == 'registrar' %}
+                                <li><a href="{{ url_for('admin_alumni') }}"><i class="fas fa-id-card"></i> Alumni Records</a></li>
+                            {% elif current_role == 'osa' %}
+                                <li><a href="{{ url_for('admin_events') }}"><i class="fas fa-calendar-check"></i> Events</a></li>
+                                <li><a href="{{ url_for('admin_event_rsvp_analytics') }}"><i class="fas fa-user-check"></i> RSVP Analytics</a></li>
+                            {% endif %}
+
+                            <li><a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle nav-btn btn-outline" role="button" aria-haspopup="true" aria-expanded="false">
+                            Login Portals
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('role_login', role='alumni') }}">Alumni Login</a></li>
+                            <li><a href="{{ url_for('role_login', role='admin') }}">Admin Login</a></li>
+                            <li><a href="{{ url_for('role_login', role='director') }}">Director Login</a></li>
+                            <li><a href="{{ url_for('role_login', role='registrar') }}">Registrar Login</a></li>
+                            <li><a href="{{ url_for('role_login', role='osa') }}">OSA Login</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="{{ url_for('role_register', role='alumni') }}" class="nav-btn btn-primary">Alumni Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+    <div class="campus-watermark" aria-hidden="true">
+        <img src="{{ campus_logo_static_path }}" alt="">
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        <i class="fas fa-{% if category == 'success' %}check-circle{% elif category == 'danger' %}exclamation-circle{% elif category == 'warning' %}exclamation-triangle{% else %}info-circle{% endif %}"></i>
+                        <span>{{ message }}</span>
+                        <button class="alert-close" type="button" aria-label="Close">&times;</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="footer-logo-circle">
+                            <img src="{{ campus_logo_static_path }}" alt="WVSU Pototan Campus logo" class="footer-logo-img">
+                        </span>
+                        <span>WVSU Pototan</span>
+                    </div>
+                    <p class="footer-desc">
+                        A secure, role-based Alumni Tracking and Graduate Tracer platform for Western Visayas State University - Pototan Campus.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Portal Access</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('role_login', role='alumni') }}">Alumni Portal</a></li>
+                        <li><a href="{{ url_for('role_login', role='admin') }}">Admin Portal</a></li>
+                        <li><a href="{{ url_for('role_login', role='director') }}">Director Portal</a></li>
+                        <li><a href="{{ url_for('role_login', role='registrar') }}">Registrar Portal</a></li>
+                        <li><a href="{{ url_for('role_login', role='osa') }}">OSA Portal</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('alumni_directory') }}">Alumni Directory</a></li>
+                        <li><a href="{{ url_for('jobs') }}">Job Board</a></li>
+                        <li><a href="{{ url_for('events') }}">Events</a></li>
+                        <li><a href="{{ url_for('about') }}">About</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-map-marker-alt"></i> WVSU Pototan Campus, Iloilo, Philippines</li>
+                        <li><i class="fas fa-phone"></i> (033) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> alumni@wvsu.edu.ph</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 WVSU Pototan Alumni Tracking System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

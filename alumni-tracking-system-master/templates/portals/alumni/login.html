@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Alumni Portal Login - WVSU Alumni System{% endblock %}
+
+{% block content %}
+<section class="auth-page" data-portal="alumni">
+    <div class="auth-container">
+        <article class="auth-card">
+            <header class="auth-header">
+                <div class="logo-icon auth-icon"><i class="fas fa-user-graduate"></i></div>
+                <h1>Alumni Portal Login</h1>
+                <p>Sign in to update your profile, submit tracer survey responses, and browse opportunities.</p>
+            </header>
+
+            <div class="auth-body">
+                <form method="POST" action="{{ portal_login_url }}" class="needs-validation">
+                    <input type="hidden" name="role" value="{{ role_slug }}">
+                    <input type="hidden" name="next" value="{{ request.args.get('next', '') }}">
+                    <div class="form-group">
+                        <label class="form-label required">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="juan.delacruz@alumni.wvsu.edu.ph" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label required">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    </div>
+                    <button type="submit" class="btn btn-login w-100">
+                        <i class="fas fa-sign-in-alt"></i> Continue to Alumni Portal
+                    </button>
+                </form>
+            </div>
+
+            <footer class="auth-footer">
+                <p>No account yet? <a href="{{ portal_register_url }}">Create an alumni account</a></p>
+                <p><a href="{{ url_for('forgot_password') }}">Forgot your password?</a></p>
+            </footer>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
